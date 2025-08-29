@@ -70,3 +70,8 @@ Addition increases but doesn't cost much.
 
 ### More Advanced Results
 Excluded.
+
+## An Incorrect Algorithm
+An *incorrect* algorithm might not be useless.
+Correct(perfect) algorithm might not actually exist, and imperfect algorithms may be good enough to produce answers, and can handle 99% cases.
+In some cases, we can't even find a correct algorithm.
