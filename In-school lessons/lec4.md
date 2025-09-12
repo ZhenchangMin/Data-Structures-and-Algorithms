@@ -21,7 +21,21 @@ For subroutine `Merge`:
 ![total time](image/lec4/3.png)
 ![total time](image/lec4/5.png)
 Use iteration to implement merge sort
-![total time](image/lec4/6.png)
+![iterative mergesort](image/lec4/6.png)
 
 ## Matrix Multiplication
 Suppose we wanna multiply two $n\times n$ matrices $X$ and $Y$
+The straightforward method takes $\Theta(n^3)$, so we do it block-wise.
+![multiplication](image/lec4/7.png)
+Solve 8 submultiplication with size n/2, and merge them together, whose time needs $\Theta(n^2)$
+
+### Strassen's Algorithm for Matrix Multiplication
+We don't need to know AE and BG separately, we just need their sum.
+But how can we get AE+BG without knowing AE and BG?
+![Strassen](image/lec4/8.png)
+
+`Substitution method` to get time complexity: (aka guess and verify)
+- Guess the form of the solution
+- Use induction to find proper constants and prove the solution works
+![Strassen](image/lec4/9.png)
+This contradicts our assumption, so
