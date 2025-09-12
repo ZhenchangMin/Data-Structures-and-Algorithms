@@ -32,3 +32,13 @@ Deque(Double-Ended Quene), represents a sequence of items with a front and a bac
 - RemoveLast(): remove the last item y from queue, return y.
 
 A Deque is a generalization of FIFO and LIFO Quene, and can implement both of them.
+
+### The List ADT
+A List is a sequence of items and keeping track on their index, supporting:
+- Size(): return n, the length of the list
+- Get(i): return xi
+- Set(i,x): set xi = x
+- Add(i,x): set xj+1 = xj for n ≥ j ≥ i, set xi = x, increase list size by 1
+- Remove(i): set xj = xj+1 for n − 1 ≥ j ≥ i, decrease list size by 1
+
+List can implement Deque.
