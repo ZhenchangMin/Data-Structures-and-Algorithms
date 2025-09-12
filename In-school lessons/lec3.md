@@ -52,3 +52,26 @@ List can implement Deque.
 
 Queries and updates are fast, while modifications are fast at end, slow at front or middle.
 So Arraylist is fast for Stack, slow for FIFO Quene.
+
+#### Using Circular Array to Implement Deque - ArrayDeque
+Another way to implement Deque: Use two pointers, to form a circular array. When we removeFirst, head pointer gets from 1 to 2. When addLast, tail pointer gets to the end, and if there is space at front, use mod operation to get tail at the front.
+![ArrayDeque](image/lec3/1.png)
+ArrayDeque is not good enough for a list, especially in the middle.
+
+##### When the array is full?
+Resizing arrays:
+- Create a new array of greater size, and copy the elements of the original array into it.
+- Abandon the old one and use the new one in place.
+How large space should we request?
+Suppose we have array with initial capacity being 1, the insert N items into it.
+- Resize it to have 1 additional cell every time -> requiring 1 + 2 + ... + N-1 ~ $N^2$ copy operations.
+- Resize it by doubling its size every time:
+For simplicity, let $N=2^k$ for some constant k -> requiring 1 + 2 + ... + $2^{k} - 1$ ~ N operations.
+Of course we could multiply the size by a larger value, but there would be more unused cells on average.
+
+##### Amortized Analysis
+Starting from an empty data structure, average running time per operation over a worst-case sequence of operations.
+Thus, if resizing by one more cell each time, the amortized complexity is $\Theta(n)$ for each operation.
+If resizing by doubling space each time, the amortized complexity is $\Theta(1)$ for each operation
+
+##### When to Shrink Array?
