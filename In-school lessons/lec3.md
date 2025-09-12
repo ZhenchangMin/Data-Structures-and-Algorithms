@@ -99,4 +99,16 @@ But if statements can slow the execution, so we use a Sentinel node to solve nul
 Execute processes. The schedule of executing depends on their arrive time.
 
 ### Application of Stack
-Balancing symbols, like matching parentheses.
+- Balancing symbols, like matching parentheses.
+- Function Calls, especially recursion.
+
+### Eliminating Recursion
+With the help of stack, recurtion can be replaced by an iteration.
+![Iteration](image/lec3/5.png)
+Suppose we're now in a frame with val=k, acc represents fact(k-1).
+
+As we don't know what is fact(n-1), we set acc as -1 to represent unknown.
+And if acc is -1 that means we don't know, so we push another frame until we get to the base case.
+And now we get base case and get a res, so we set acc now to be res, and pop the frame.
+
+### Tail Recursion
