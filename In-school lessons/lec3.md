@@ -45,7 +45,7 @@ List can implement Deque.
 
 #### Using Array to Implement List - Arraylist
 - Size(): always $\Theta(1)$
-- Get(i): always $\Theta(1)$
+- Get(i): always $\Theta(1)$ arrays are stored consecutively, so it is fast to find item with given index
 - Set(i, x): always $\Theta(1)$
 - Add(i, x): $\Theta(1)$ to $\Theta(n)$
 - Remove(i): $\Theta(1)$ to $\Theta(n)$
@@ -75,3 +75,19 @@ Thus, if resizing by one more cell each time, the amortized complexity is $\Thet
 If resizing by doubling space each time, the amortized complexity is $\Theta(1)$ for each operation
 
 ##### When to Shrink Array?
+When pop() each time, we shrink the array by 1 less cell?
+When the array is half-full, we shrink the array to the halve size? -Causing **Thrashing** problem
+Since, if now we add just one element, we need to resize the array by doubling the size, and then pop one element, we should shrink it back to the halve size
+When pushes and pops come with relatively equal frequency, it will be too expensive!
+Usually, when the array is 1/4 full, we shrink it to the halve size.
+
+#### Using Linked Lists to Implement List - LinkedList
+![LinkedList](image/lec3/2.png)
+When we `push` and `pop` we don't operate on `tail` because it's hard to find a new item `tail` should point to, cuz we don't have `prev` pointer.
+When we implement FIFO Quene, we can add at tail and remove at head, so it is fast.
+Now that it is hard to remove at tail, LinkedList is not good for Deque.
+So if we use a Doubly-Linked List it would solve the problem where it is difficult to remove at tail.
+
+#### Using Doubly-Linked List to Implement List — DLinkedList
+DLinkedList is good for Stack, FIFO Queue, and Deque; but can be slow for some List operations.
+![DLinkedList](image/lec3/3.png)
