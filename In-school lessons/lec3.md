@@ -91,3 +91,12 @@ So if we use a Doubly-Linked List it would solve the problem where it is difficu
 #### Using Doubly-Linked List to Implement List — DLinkedList
 DLinkedList is good for Stack, FIFO Queue, and Deque; but can be slow for some List operations.
 ![DLinkedList](image/lec3/3.png)
+But if statements can slow the execution, so we use a Sentinel node to solve null problem.
+![Sentinel](image/lec3/4.png)
+
+## Applications of Basic Data Structures
+### Application of FIFO Quene
+Execute processes. The schedule of executing depends on their arrive time.
+
+### Application of Stack
+Balancing symbols, like matching parentheses.
