@@ -112,3 +112,8 @@ And if acc is -1 that means we don't know, so we push another frame until we get
 And now we get base case and get a res, so we set acc now to be res, and pop the frame.
 
 ### Tail Recursion
+Can transform into iteration easily.
+![tail recursion](image/lec3/6.png)
+
+Iteration can be converted into and from a recursion.
+Iteration can be faster and more memory efficient, while recursion is more clear and intuitive.
