@@ -42,3 +42,13 @@ A List is a sequence of items and keeping track on their index, supporting:
 - Remove(i): set xj = xj+1 for n − 1 ≥ j ≥ i, decrease list size by 1
 
 List can implement Deque.
+
+#### Using Array to Implement List - Arraylist
+- Size(): always $\Theta(1)$
+- Get(i): always $\Theta(1)$
+- Set(i, x): always $\Theta(1)$
+- Add(i, x): $\Theta(1)$ to $\Theta(n)$
+- Remove(i): $\Theta(1)$ to $\Theta(n)$
+
+Queries and updates are fast, while modifications are fast at end, slow at front or middle.
+So Arraylist is fast for Stack, slow for FIFO Quene.
