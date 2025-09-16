@@ -1,40 +1,58 @@
 #include <iostream>
+#include <deque>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
-typedef struct node{
-    int value;
-    int index;
-} Node;
-
-void execute(vector<Node>& nodes, int quiry){
-    
-}
-void print(vector<Node>& nodes){
-    for(int i = 1; nodes[i] ; i++){
-        cout << nodes[i].value << " ";
-    }
-    cout << endl;
-}
-int main(){
+int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    int t;
-    cin >> t;
-    while(t--){
+
+    int T;
+    cin >> T;
+    while (T--) {
         int n, q;
         cin >> n >> q;
-        vector<Node> nodes(n+1);
-        for(int i = 1; i <= n; i++){
-            cin >> nodes[i].value;
-            nodes[i].index = i;
+        deque<int> numbers;
+        for (int i = 0; i < n; i++) {
+            int num;
+            cin >> num;
+            numbers.push_back(num);
         }
-        while(q--){
-            int quiry;
-            cin >> quiry;
-            execute(nodes, quiry);
+        vector<int> ops(q);
+        for (int i = 0; i < q; i++) {
+            cin >> ops[i];
         }
-        print(nodes);
+        for (int k : ops) {
+            deque<int> temp;//把前k个要处理的元素取出来
+            for (int i = 0; i < k; i++) {
+                temp.push_back(numbers.front());
+                numbers.pop_front();
+            }
+            deque<int> evenIndices;
+            for (int i = 1; i <= k; i++) {
+                if (i % 2 == 0) { 
+                    evenIndices.push_back(temp[i-1]);
+                }
+            }
+            deque<int> reversedEven;
+            while (!evenIndices.empty()) {
+                reversedEven.push_back(evenIndices.back());
+                evenIndices.pop_back();
+            }
+            int idx = 0;
+            for (int i = 1; i <= k; ++i) {
+                if (i % 2 == 0) {
+                    numbers.push_front(reversedEven.back());
+                    reversedEven.pop_back();
+                }
+            }
+        }
+        
+        while (!numbers.empty()) {
+            cout << numbers.front() << " ";
+            numbers.pop_front();
+        }
+        cout << '\n';
     }
+    return 0;
 }
