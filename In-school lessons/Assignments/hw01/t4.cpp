@@ -18,20 +18,30 @@ int main()
             std::cin >> a[i];
         }
         int count = 0;
+        int minHeight = a[0];
         int maxRead = 0;
         for (int i = 0; i < n; i++)
         {
-            maxRead = a[i];
+            maxRead = 0;
+            minHeight = a[i];
             for (int j = i + 1; j < n; j++)
             {
+                minHeight = a[i];//两边更小的那一个楼房高度设为minHeight
+                if (a[j] <= minHeight)
+                {
+                    minHeight = a[j];
+                }
+                if(a[j-1] > maxRead) {
+                    maxRead = a[j-1];
+                } 
                 if(j == i + 1) {
                     count++;
                     continue;
-                }
-                else if(a[j] >= maxRead) {
+                }//如果两楼相邻，直接加加
+                else if(maxRead != a[i] && maxRead <= minHeight) {
                     count++;
-                    maxRead = a[j];
-                } else {
+                }//如果两边之间的最大值小于minHeight，加加
+                else {
                     continue;
                 }
             }
