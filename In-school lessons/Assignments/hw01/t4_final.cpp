@@ -1,20 +1,6 @@
-//这个答案超时了，想办法提升效率
 #include <iostream>
 #include <vector>
 using namespace std;
-
-bool noTaller(vector<int> &a, int i, int j)
-{
-    int minHeight = min(a[i], a[j]);
-    for (int k = i + 1; k < j; k++)
-    {
-        if (a[k] > minHeight)
-        {
-            return false;
-        }
-    }
-    return true;
-}
 
 int main()
 {
@@ -32,13 +18,16 @@ int main()
         int count = 0;
         for (int i = 0; i < n; i++)
         {
+            int minHeight = a[i];
             for (int j = i + 1; j < n; j++)
             {
-                if (noTaller(a, i, j))
+                if (a[j] <= minHeight)
                 {
                     count++;
+                    minHeight = a[j];
                 }
-                else{
+                else
+                {
                     break;
                 }
             }
