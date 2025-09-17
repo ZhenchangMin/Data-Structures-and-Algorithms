@@ -1,45 +1,38 @@
-//这个答案超时了，想办法提升效率
 #include <iostream>
 #include <vector>
 using namespace std;
 
-bool noTaller(vector<int> &a, int i, int j)
-{
-    int minHeight = min(a[i], a[j]);
-    for (int k = i + 1; k < j; k++)
-    {
-        if (a[k] > minHeight)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
 int main()
 {
+    ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
     int T;
-    cin >> T;
+    std::cin >> T;
     while (T--)
     {
         int n;
-        cin >> n;
+        std::cin >> n;
         vector<int> a(n);
         for (int i = 0; i < n; i++)
         {
-            cin >> a[i];
+            std::cin >> a[i];
         }
         int count = 0;
+        int maxRead = 0;
         for (int i = 0; i < n; i++)
         {
+            maxRead = a[i];
             for (int j = i + 1; j < n; j++)
             {
-                if (noTaller(a, i, j))
-                {
+                if(j == i + 1) {
                     count++;
+                    continue;
                 }
-                else{
-                    break;
+                else if(a[j] >= maxRead) {
+                    count++;
+                    maxRead = a[j];
+                } else {
+                    continue;
                 }
             }
         }
