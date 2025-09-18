@@ -1,4 +1,3 @@
-//This code runs overtime and needs optimization
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -27,22 +26,26 @@ int main()
             minHeight = a[i];
             for (int j = i + 1; j < n; j++)
             {
-                minHeight = a[i];//两边更小的那一个楼房高度设为minHeight
+                minHeight = a[i]; // 两边更小的那一个楼房高度设为minHeight
                 if (a[j] <= minHeight)
                 {
                     minHeight = a[j];
                 }
-                if(a[j-1] > maxIntermidiate && j != i + 1) {
-                    maxIntermidiate = a[j-1];
-                } 
-                if(j == i + 1) {
+                if (a[j - 1] > maxIntermidiate && j != i + 1)
+                {
+                    maxIntermidiate = a[j - 1];
+                }
+                if (j == i + 1)
+                {
                     count++;
                     continue;
-                }//如果两楼相邻，直接加加
-                else if(maxIntermidiate <= minHeight) {
+                } // 如果两楼相邻，直接加加
+                else if (maxIntermidiate <= minHeight)
+                {
                     count++;
-                }//如果两边之间的最大值小于minHeight，加加
-                else {
+                } // 如果两边之间的最大值小于minHeight，加加
+                else
+                {
                     continue;
                 }
             }
