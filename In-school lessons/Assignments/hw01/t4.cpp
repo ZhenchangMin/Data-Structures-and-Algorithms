@@ -19,10 +19,10 @@ int main()
         }
         int count = 0;
         int minHeight = a[0];
-        int maxRead = 0;
+        int maxIntermidiate = 0;
         for (int i = 0; i < n; i++)
         {
-            maxRead = 0;
+            maxIntermidiate = 0;
             minHeight = a[i];
             for (int j = i + 1; j < n; j++)
             {
@@ -31,14 +31,14 @@ int main()
                 {
                     minHeight = a[j];
                 }
-                if(a[j-1] > maxRead) {
-                    maxRead = a[j-1];
+                if(a[j-1] > maxIntermidiate && j != i + 1) {
+                    maxIntermidiate = a[j-1];
                 } 
                 if(j == i + 1) {
                     count++;
                     continue;
                 }//如果两楼相邻，直接加加
-                else if(maxRead != a[i] && maxRead <= minHeight) {
+                else if(maxIntermidiate <= minHeight) {
                     count++;
                 }//如果两边之间的最大值小于minHeight，加加
                 else {
