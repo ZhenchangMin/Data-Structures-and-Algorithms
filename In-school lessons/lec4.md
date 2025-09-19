@@ -168,3 +168,46 @@ As we update the two pointers `left` and `right`, when left>right, indicates tha
 Input an array A of n elements, find a local maximum(peak)
 An element A[i] is a **peak** if it is not smaller than its adjacent elements, including the edges of A.
 Finding a global maximum is difficult, sometimes a peak is **good enough** and costs much less time.
+
+This algorithm is like binary search.
+![peak finding](image/lec4/31.png)
+Choose one middle element first, if it is not a peak, assume on its left is smaller and right one is bigger.
+**In worst case**, the left side will include 0 peak, but the right side will definitely include at least 1 peak, on the edge of the array in the worst case.
+So we can safely **dispose** the smaller side, and focus on the bigger half to search for a peak.
+
+The algorithm will always terminate for the two pointers left and right will meet together at last.
+![peak finding](image/lec4/32.png)
+
+### Peak Finding in Matrices
+Input a 2d array A of $n^2$ elements
+Output a peak when it is no smaller than its four adjacent elements.
+
+#### Algorithm I
+**Compress** each column into one element, resulting into an 1d array, that is using the maximum in this column to represent this column, and run previous peak finding to get a peak in the 1d array.
+
+The result peak must be one peak in the matrix.
+
+Unfortunately the complexity of this algorithm is still $\Theta(n^2)$, as we need to find one maximum in one column and n columns exist.
+
+#### Algorithm II
+Scan the middle column and find the max element m, start from m, if m is peak return.
+Otherwise, assume that left neighbor is larger than m, then recurse this algorithm in the left half, and the right half can be disposed.
+
+Runtime: $T(n, n')\leq T(n/2, n')+\Theta(n')=\Theta(nlgn)$
+
+Can we do better?
+
+#### Algorithm III
+Scan the cross and find one max element m
+If m not peak, one neighbor of m is bigger, and recurse into the quadrant.
+![peak finding](image/lec4/33.png)
+However, this is a wrong algorithm.
+**False Claim**: A peak (found by the algorithm) in the quadrant containing the large neighbor is also a peak in the original matrix.
+
+In previous ones, the peak of one column and bigger than its row neighbors is bound to be a peak of the matrix.
+While in this case, choosing crosses is not a right choice. Some elements are not scanned in the crosses.
+
+To solve it: Add a frame of the cross.
+![peak finding](image/lec4/34.png)
+
+Runtime of the algorithm: $T(n, n)=\Theta(n)$
