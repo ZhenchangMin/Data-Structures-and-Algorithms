@@ -93,3 +93,59 @@ The 3 constants are independent from input `n`.
 
 #### Application
 ![Application](image/lec4/19.png)
+
+#### Proof
+![Application](image/lec4/19.png)
+To get graph simpler d is eliminated, the nodes should be $c(\frac{n}{b^{t}})^d$
+Add nodes in one level we get level costs.
+And add the level costs together we get total cost.
+
+![Application](image/lec4/20.png)
+The formula of level cost is in fact a **Geometric Sum**.
+Let $x=\frac{a}{b^d}$, $T(n)=cn^d\Sigma(x)^t$ (sum of a geometric sequence)
+
+![Application](image/lec4/22.png)
+Case1: $a=b^d$
+![Application](image/lec4/21.png)
+Case2: $a<b^d$
+![Application](image/lec4/23.png)
+Case3: $a>b^d$
+![Application](image/lec4/24.png)
+
+#### Insights from Master Method
+What does it mean by $a>b^d$?
+Meaning that a is very large, so we got many branches.
+And by this we know **branching one problem** might cause the number of subproblems to **explode**, as the most work is done with the bottom of the tree.
+
+What does it mean by $a<b^d$?
+Meaning that the problems at the bottom of the tree are **smaller**, and most work is done with the subproblems at the top of the tree.
+
+The 3 constants `a, b, d` work together to form the result of time complexity.
+
+### General Version of Master Method
+Solving the problem when $T(n)=a\times T(\frac{n}{b})+f(n)$
+It's different from the simpler one as $f(n)$ acts as the divide and combine time needed for every level.
+![Application](image/lec4/25.png)
+![Application](image/lec4/26.png)
+
+### Ignoring Floors and Ceilings is Okay
+When consider the recurrence of MergeSort, i.e.,$T(n) = 2 ⋅ T(n/2) + \Theta(n)$
+What if the given n is odd?
+Actually, the actual recurrence of MergeSort is $T(n) = T(⌈n/2⌉) + T(⌊n/2⌋) + \Theta(n)$
+However, this equation is complex.
+
+#### Domain Transformation
+![Application](image/lec4/27.png)
+First make the floor to ceiling, then eliminate the 2 ceilings.
+Then the form is like a subproblem, but with one more `1`
+So we set one $\alpha$, and use a certain relationship to solve $\alpha$, and setting $\alpha$ does not affect the time complexity.
+Then we can use Master Method to get the final answer of $T(n)$
+
+In the same way we make ceiling to floor, getting the same result, illustrating that floors and ceilings does not really affect the time complexity of merge sort.
+
+Domain Transformation can change one recurrence that's not really good into one recurrence we want, thus convenient to solve by `guess and verify` or `Master Method`.
+
+Bad recurrence: $T(n)=2T(\frac{n}{2}+15)+f(n)$
+Good one: $T(n)=2T(\frac{n}{2})+f(n)$
+
+## 
