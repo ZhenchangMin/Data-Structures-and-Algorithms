@@ -166,4 +166,5 @@ As we update the two pointers `left` and `right`, when left>right, indicates tha
 
 ### Peak Finding
 Input an array A of n elements, find a local maximum(peak)
-An element A[i] is a **peak** if it is not smaller than its adjacent elements.
+An element A[i] is a **peak** if it is not smaller than its adjacent elements, including the edges of A.
+Finding a global maximum is difficult, sometimes a peak is **good enough** and costs much less time.
