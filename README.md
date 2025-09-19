@@ -1,4 +1,5 @@
 # Data-Structures-and-Algorithms
-Concludes notes for cs61b
+Concludes notes for cs61b and in-school classes.
 ## Reference
-[Official website](https://sp18.datastructur.es/)
+[CS61B Official Website](https://sp18.datastructur.es/)
+[In-school Course Online-Judge](https://iseoj.nju.edu.cn/)
