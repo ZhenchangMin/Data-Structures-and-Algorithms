@@ -38,4 +38,10 @@ But how can we get AE+BG without knowing AE and BG?
 - Guess the form of the solution
 - Use induction to find proper constants and prove the solution works
 ![Strassen](image/lec4/9.png)
-This contradicts our assumption, so
+This contradicts our assumption, so it can't prove our guess.
+While looking at the result we find an additional $cn^2$, so next we try to **subtract** to see whether we can prove.
+![Subtraction](image/lec4/10.png)
+![Subtraction](image/lec4/11.png)
+Now we can prove the time complexity of Strassen's algorithm is $O(n^{log_27})$
+There is no general way to correctly guess the **tightest** asymptotic solution to an arbitrary recurrence.
+**Making a good guess** takes experience and, occasionally, creativity.
