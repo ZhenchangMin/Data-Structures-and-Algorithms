@@ -148,4 +148,22 @@ Domain Transformation can change one recurrence that's not really good into one 
 Bad recurrence: $T(n)=2T(\frac{n}{2}+15)+f(n)$
 Good one: $T(n)=2T(\frac{n}{2})+f(n)$
 
-## 
+## Reduce-and-Conquer
+We might not need to consider all subproblems, sometimes only one subproblem is needed to consider.
+So that the combine step would be easier.
+
+### The Search Problem
+Input an array containing n elements, and an element x.
+Output index of x if it's in A, otherwise return false.
+Inevitably the runtime is $\Theta (n)$, But what if the input array is **sorted**?
+
+#### Binary Search
+![Application](image/lec4/28.png)
+![Application](image/lec4/29.png)
+Only consider one side, and dispose the other.
+As we update the two pointers `left` and `right`, when left>right, indicates that x is not in A, so exit successfully.
+![Application](image/lec4/30.png)
+
+### Peak Finding
+Input an array A of n elements, find a local maximum(peak)
+An element A[i] is a **peak** if it is not smaller than its adjacent elements.
