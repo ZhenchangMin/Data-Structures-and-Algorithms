@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 using namespace std;
-const double Epislon = 1e-15;
+const double Epislon = 1e-8;
 using ld = long double;
 typedef struct position
 {
@@ -16,7 +16,7 @@ bool existXofCirclePosition(Pos *points, int n, ld r)
         int x = points[i].x;
         int y = points[i].y;
         ld d = 2 * r * y - (ld)y * y; //(x-h)^2 + (y-r)^2 \leq r^2, 化简得到x-h=正负的sqrt(d)
-        if (d < 0)
+        if (d <= -Epislon)
         { // 根号下不能为负
             return false;
         }
@@ -35,23 +35,54 @@ bool existXofCirclePosition(Pos *points, int n, ld r)
 ld solve(Pos *points, int n)
 {
     // firstly check if all points have the same sign of y, or the circle won't exist so return -1
-    int sign = points[0].y > 0 ? 1 : -1;
-    for (int i = 1; i < n; ++i)
+    int sign = 0;
+    for (int i = 0; i < n; ++i)
     {
-        if ((points[i].y > 0 ? 1 : -1) != sign)
+        int y = points[i].y;
+        if (y > 0)
         {
-            return -1;
+            if (sign == 0)
+                sign = 1;
+            else if (sign == -1)
+                return -1;
+        }
+        else if (y < 0)
+        {
+            if (sign == 0)
+                sign = -1;
+            else if (sign == 1)
+                return -1;
+        }
+    }
+    if (sign == -1){
+        for (int i = 0; i < n; ++i)
+        {
+            points[i].y = -points[i].y;
         }
     }
 
-    ld left_r = 0.0;
-    ld right_r = 0.0; // r取值的在一个区间内，即[left_r, right_r]
+    ld max_abs_y = 0.0;
+    ld min_abs_y = 1e18;
+    int max_x = -1e9;
+    int min_x = 1e9;
     for (int i = 0; i < n; ++i)
     {
-        right_r = max(right_r, (ld)abs(points[i].y));
+        int x = points[i].x;
+        int y = points[i].y;
+        ld abs_y = abs((ld)y);
+        max_abs_y = max(max_abs_y, abs_y);
+        min_abs_y = min(min_abs_y, abs_y);
+        max_x = max(max_x, x);
+        min_x = min(min_x, x);
     }
-    right_r = right_r * 2;
-    while (right_r - left_r > 1e-10)
+
+    // 初始右边界
+    ld span_x = (ld)(max_x - min_x);
+    ld right_r = max_abs_y;
+    right_r *= 2;
+    ld left_r = 0.0;
+
+    while (right_r - left_r > 1e-5)
     {
         ld mid = (left_r + right_r) / 2;
         if (existXofCirclePosition(points, n, mid))
@@ -79,6 +110,7 @@ int main()
         points[i] = {x, y};
     }
     ld ans = solve(points, n);
+    cout << fixed;
     cout.precision(20);
     cout << ans << '\n';
     delete[] points;
