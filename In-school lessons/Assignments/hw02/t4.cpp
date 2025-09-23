@@ -1,118 +1,119 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
 #include <cmath>
+#include <iomanip>
+
 using namespace std;
-const double Epislon = 1e-8;
 using ld = long double;
-typedef struct position
+
+typedef struct Point
 {
-    int x, y;
-} Pos;
-// 如果存在可行的圆心坐标，那么所有点到圆心的距离应该小于等于半径
-bool existXofCirclePosition(Pos *points, int n, ld r)
+    ld x, y;
+} point;
+
+int n;
+vector<point> points;
+
+ld required_r(ld a, const vector<point> &pts)
 {
-    ld left = -1e18, right = 1e18; // 这个函数来求圆心的x坐标的范围，看是否存在
-    for (int i = 0; i < n; ++i)
+    ld max_r = 0.0;
+    for (const point p : pts)
     {
-        int x = points[i].x;
-        int y = points[i].y;
-        ld d = 2 * r * y - (ld)y * y; //(x-h)^2 + (y-r)^2 \leq r^2, 化简得到x-h=正负的sqrt(d)
-        if (d <= -Epislon)
-        { // 根号下不能为负
-            return false;
-        }
-        ld sqrt_d = sqrt(d);
-        ld curr_left = x - sqrt_d;
-        ld curr_right = x + sqrt_d;
-        left = max(left, curr_left);
-        right = min(right, curr_right);
-        if (left > right + Epislon)
-        {
-            return false;
-        }
+        ld r = ((p.x - a) * (p.x - a) + p.y * p.y) / (2.0 * p.y);
+        if (r > max_r)
+            max_r = r;
     }
-    return left <= right + Epislon;
+    return max_r;
 }
-ld solve(Pos *points, int n)
+
+ld find(ld left, ld right, const vector<point> &pts, int iterations = 120)
 {
-    // firstly check if all points have the same sign of y, or the circle won't exist so return -1
-    int sign = 0;
-    for (int i = 0; i < n; ++i)
+    while (iterations--)
     {
-        int y = points[i].y;
-        if (y > 0)
+        ld m1 = left + (right - left) / 3.0;
+        ld m2 = right - (right - left) / 3.0;
+        ld r1 = required_r(m1, pts);
+        ld r2 = required_r(m2, pts);
+        if (r1 < r2)
         {
-            if (sign == 0)
-                sign = 1;
-            else if (sign == -1)
-                return -1;
+            right = m2;
         }
-        else if (y < 0)
+        else
         {
-            if (sign == 0)
-                sign = -1;
-            else if (sign == 1)
-                return -1;
+            left = m1;
         }
     }
-    if (sign == -1){
-        for (int i = 0; i < n; ++i)
+    return required_r((left + right) * 0.5, pts);
+}
+
+ld solve(int l, int r)
+{
+    if (r - l + 1 <= 3)
+    {
+        vector<point> sub(points.begin() + l, points.begin() + r + 1);
+        ld best = 1e9;
+        ld min_x = 1e9, max_x = -1e9;
+        for (const auto &p : sub)
+        {
+            min_x = min(min_x, p.x);
+            max_x = max(max_x, p.x);
+        }
+        min_x -= 1.0;
+        max_x += 1.0;
+        return find(min_x, max_x, sub);
+    }
+
+    int mid = (l + r) / 2;
+    ld r_left = solve(l, mid);
+    ld r_right = solve(mid + 1, r);
+
+    ld min_x = 1e9, max_x = -1e9;
+    for (int i = l; i <= r; i++)
+    {
+        min_x = min(min_x, points[i].x);
+        max_x = max(max_x, points[i].x);
+    }
+    min_x -= 1.0;
+    max_x += 1.0;
+
+    vector<point> sub(points.begin() + l, points.begin() + r + 1);
+    return find(min_x, max_x, sub);
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> n;
+    points.resize(n);
+    bool has_positive = false, has_negative = false;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> points[i].x >> points[i].y;
+        if (points[i].y > 0)
+            has_positive = true;
+        if (points[i].y < 0)
+            has_negative = true;
+    }
+
+    if (has_positive && has_negative)
+    {
+        cout << -1 << '\n';
+        return 0;
+    }
+
+    if (has_negative)
+    {
+        for (int i = 0; i < n; i++)
         {
             points[i].y = -points[i].y;
         }
     }
 
-    ld max_abs_y = 0.0;
-    ld min_abs_y = 1e18;
-    int max_x = -1e9;
-    int min_x = 1e9;
-    for (int i = 0; i < n; ++i)
-    {
-        int x = points[i].x;
-        int y = points[i].y;
-        ld abs_y = abs((ld)y);
-        max_abs_y = max(max_abs_y, abs_y);
-        min_abs_y = min(min_abs_y, abs_y);
-        max_x = max(max_x, x);
-        min_x = min(min_x, x);
-    }
+    ld ans = solve(0, n - 1);
+    cout << fixed << setprecision(6) << ans << '\n';
 
-    // 初始右边界
-    ld span_x = (ld)(max_x - min_x);
-    ld right_r = max_abs_y;
-    right_r *= 2;
-    ld left_r = 0.0;
-
-    while (right_r - left_r > 1e-5)
-    {
-        ld mid = (left_r + right_r) / 2;
-        if (existXofCirclePosition(points, n, mid))
-        {
-            right_r = mid;
-        }
-        else
-        {
-            left_r = mid;
-        }
-    }
-    return right_r;
-}
-int main()
-{
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    int n;
-    cin >> n;
-    Pos *points = new Pos[n];
-    for (int i = 0; i < n; i++)
-    {
-        int x, y;
-        cin >> x >> y;
-        points[i] = {x, y};
-    }
-    ld ans = solve(points, n);
-    cout << fixed;
-    cout.precision(20);
-    cout << ans << '\n';
-    delete[] points;
     return 0;
 }
