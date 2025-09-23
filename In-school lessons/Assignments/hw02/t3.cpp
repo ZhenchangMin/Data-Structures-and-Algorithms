@@ -1,17 +1,30 @@
 #include <iostream>
 #include <cmath>
 using namespace std;
-int number = 1;
 
 using ll = long long;
-ll getIndex(ll n, ll x, ll y) {
-    return x * n + y;
+ll getIndex(ll totalsize, ll x, ll y) {
+    return x * totalsize + y;
 }
 
-void placeL(ll matrix[], ll n, ll leftCornerX, ll leftCornerY, ll missingX, ll missingY)
+void placeL(ll matrix[], ll totalsize, ll n, ll leftCornerX, ll leftCornerY, ll missingX, ll missingY, ll &number)
 {
-    if (n == 1)
-        return; // base case
+    if (n == 2) {
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                ll currX = leftCornerX + i;
+                ll currY = leftCornerY + j;
+                if (currX != missingX || currY != missingY)
+                {
+                    matrix[getIndex(totalsize, currX, currY)] = number;
+                }
+            }
+        }
+        number++;
+        return;
+    } // base case, directly place the L
 
     ll half = n / 2;            // split the board into 4 quadrants
     ll currTile = number++; // current tile number
@@ -21,51 +34,47 @@ void placeL(ll matrix[], ll n, ll leftCornerX, ll leftCornerY, ll missingX, ll m
     if (missingX < leftCornerX + half && missingY < leftCornerY + half)
     {
         // place one L tile in the middle, spreading into other 3 quadrants
-        matrix[getIndex(n, leftCornerX + half - 1, leftCornerY + half)] = currTile; // top right corner
-        matrix[getIndex(n, leftCornerX + half, leftCornerY + half - 1)] = currTile; // bottom left corner
-        matrix[getIndex(n, leftCornerX + half, leftCornerY + half)] = currTile;     // bottom right corner
-
+        matrix[getIndex(totalsize, leftCornerX + half - 1, leftCornerY + half)] = currTile; // top right corner
+        matrix[getIndex(totalsize, leftCornerX + half, leftCornerY + half - 1)] = currTile; // bottom left corner
+        matrix[getIndex(totalsize, leftCornerX + half, leftCornerY + half)] = currTile;     // bottom right corner
         // recurse on 3 more quadrants
-        placeL(matrix, half, leftCornerX, leftCornerY, missingX, missingY);
-        placeL(matrix, half, leftCornerX, leftCornerY + half, leftCornerX + half - 1, leftCornerY + half);
-        placeL(matrix, half, leftCornerX + half, leftCornerY, leftCornerX + half, leftCornerY + half - 1);
-        placeL(matrix, half, leftCornerX + half, leftCornerY + half, leftCornerX + half, leftCornerY + half);
+        placeL(matrix, totalsize, half, leftCornerX, leftCornerY, missingX, missingY, number);
+        placeL(matrix, totalsize, half, leftCornerX, leftCornerY + half, leftCornerX + half - 1, leftCornerY + half, number);
+        placeL(matrix, totalsize, half, leftCornerX + half, leftCornerY, leftCornerX + half, leftCornerY + half - 1, number);
+        placeL(matrix, totalsize, half, leftCornerX + half, leftCornerY + half, leftCornerX + half, leftCornerY + half, number);
     }
     // top right
     else if (missingX < leftCornerX + half && missingY >= leftCornerY + half)
     {
-        matrix[getIndex(n, leftCornerX + half - 1, leftCornerY + half - 1)] = currTile; 
-        matrix[getIndex(n, leftCornerX + half, leftCornerY + half - 1)] = currTile;    
-        matrix[getIndex(n, leftCornerX + half, leftCornerY + half)] = currTile;         
-
-        placeL(matrix, half, leftCornerX, leftCornerY, leftCornerX + half - 1, leftCornerY + half - 1);      
-        placeL(matrix, half, leftCornerX, leftCornerY + half, missingX, missingY);                     
-        placeL(matrix, half, leftCornerX + half, leftCornerY, leftCornerX + half, leftCornerY + half - 1);   
-        placeL(matrix, half, leftCornerX + half, leftCornerY + half, leftCornerX + half, leftCornerY + half);
+        matrix[getIndex(totalsize, leftCornerX + half - 1, leftCornerY + half - 1)] = currTile; 
+        matrix[getIndex(totalsize, leftCornerX + half, leftCornerY + half - 1)] = currTile;    
+        matrix[getIndex(totalsize, leftCornerX + half, leftCornerY + half)] = currTile;         
+        placeL(matrix, totalsize, half, leftCornerX, leftCornerY, leftCornerX + half - 1, leftCornerY + half - 1, number);      
+        placeL(matrix, totalsize, half, leftCornerX, leftCornerY + half, missingX, missingY, number);                     
+        placeL(matrix, totalsize, half, leftCornerX + half, leftCornerY, leftCornerX + half, leftCornerY + half - 1, number);   
+        placeL(matrix, totalsize, half, leftCornerX + half, leftCornerY + half, leftCornerX + half, leftCornerY + half, number);
     }
     // bottom left
     else if (missingX >= leftCornerX + half && missingY < leftCornerY + half)
     {
-        matrix[getIndex(n, leftCornerX + half - 1, leftCornerY + half - 1)] = currTile; 
-        matrix[getIndex(n, leftCornerX + half - 1, leftCornerY + half)] = currTile;     
-        matrix[getIndex(n, leftCornerX + half, leftCornerY + half)] = currTile;         
-
-        placeL(matrix, half, leftCornerX, leftCornerY, leftCornerX + half - 1, leftCornerY + half - 1);      
-        placeL(matrix, half, leftCornerX, leftCornerY + half, leftCornerX + half - 1, leftCornerY + half);   
-        placeL(matrix, half, leftCornerX + half, leftCornerY, missingX, missingY);                      
-        placeL(matrix, half, leftCornerX + half, leftCornerY + half, leftCornerX + half, leftCornerY + half);
+        matrix[getIndex(totalsize, leftCornerX + half - 1, leftCornerY + half - 1)] = currTile; 
+        matrix[getIndex(totalsize, leftCornerX + half - 1, leftCornerY + half)] = currTile;     
+        matrix[getIndex(totalsize, leftCornerX + half, leftCornerY + half)] = currTile;         
+        placeL(matrix, totalsize, half, leftCornerX, leftCornerY, leftCornerX + half - 1, leftCornerY + half - 1, number);      
+        placeL(matrix, totalsize, half, leftCornerX, leftCornerY + half, leftCornerX + half - 1, leftCornerY + half, number);   
+        placeL(matrix, totalsize, half, leftCornerX + half, leftCornerY, missingX, missingY, number);                      
+        placeL(matrix, totalsize, half, leftCornerX + half, leftCornerY + half, leftCornerX + half, leftCornerY + half, number);
     }
     // bottom right
     else
     {
-        matrix[getIndex(n, leftCornerX + half - 1, leftCornerY + half - 1)] = currTile;
-        matrix[getIndex(n, leftCornerX + half - 1, leftCornerY + half)] = currTile;
-        matrix[getIndex(n, leftCornerX + half, leftCornerY + half - 1)] = currTile;
-
-        placeL(matrix, half, leftCornerX, leftCornerY, leftCornerX + half - 1, leftCornerY + half - 1);
-        placeL(matrix, half, leftCornerX, leftCornerY + half, leftCornerX + half - 1, leftCornerY + half);
-        placeL(matrix, half, leftCornerX + half, leftCornerY, leftCornerX + half, leftCornerY + half - 1);
-        placeL(matrix, half, leftCornerX + half, leftCornerY + half, missingX, missingY);  
+        matrix[getIndex(totalsize, leftCornerX + half - 1, leftCornerY + half - 1)] = currTile;
+        matrix[getIndex(totalsize, leftCornerX + half - 1, leftCornerY + half)] = currTile;
+        matrix[getIndex(totalsize, leftCornerX + half, leftCornerY + half - 1)] = currTile;
+        placeL(matrix, totalsize, half, leftCornerX, leftCornerY, leftCornerX + half - 1, leftCornerY + half - 1, number);
+        placeL(matrix, totalsize, half, leftCornerX, leftCornerY + half, leftCornerX + half - 1, leftCornerY + half, number);
+        placeL(matrix, totalsize, half, leftCornerX + half, leftCornerY, leftCornerX + half, leftCornerY + half - 1, number);
+        placeL(matrix, totalsize, half, leftCornerX + half, leftCornerY + half, missingX, missingY, number);  
     }
 }
 
@@ -83,8 +92,8 @@ int main()
         y--;
         ll *matrix = new ll[n * n]();
         matrix[getIndex(n, x, y)] = 0;
-        number = 1;
-        placeL(matrix, n, 0, 0, x, y);
+        ll number = 1;
+        placeL(matrix, n, n, 0, 0, x, y, number);
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
@@ -93,6 +102,7 @@ int main()
             }
             cout << '\n';
         }
+        delete[] matrix;
     }
     return 0;
 }
