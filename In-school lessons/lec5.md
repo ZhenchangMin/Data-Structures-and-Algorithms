@@ -61,5 +61,7 @@ Time complexity: $O(nlgn)$
 How to BuildMaxHeap using an array?
 - Start with empty, call HeapInsert n times?
 Obviously this is okay, but it costs much time($O(nlgn)$).
+
 - Use a dividing approach: keep merging smaller heaps into larger ones, until one single heap remains.
 After every merging, check if all parents are bigger than children, and swap if not.
+In this case, time complexity would be $O(n)$
