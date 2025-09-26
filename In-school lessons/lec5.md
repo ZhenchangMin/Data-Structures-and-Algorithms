@@ -41,5 +41,25 @@ Now the root is relatively small, so we need to swap the root with its children.
 Which one to swap? The one with bigger value, becuase it needs to be bigger than its brother after being the root of the tree.
 ![binaryheap](image/lec5/5.png)
 ![binaryheap](image/lec5/6.png)
-And we repeat these actions until the item is no smaller than its children.
+And we repeat these actions until the item is no smaller than its children or it becomes a leaf.
 ![binaryheap](image/lec5/7.png)
+
+### Application of Heaps: Priority Queue
+Use binary hep to implement priority queue:
+- Add(item): HeapInster(item)
+- Remove(): HeapExtractMax()
+- UpdatePriority(item, val)
+
+All these operations finish within $O(lgn)$ time
+
+### Application II: HeapSort
+It is very simple to getMax in heap and rather simple to remove it.
+Input a random array, generate one MaxHeap using the array, and we do HeapExtractMax many times and keep a copy of it, getting a sorted array.
+
+Time complexity: $O(nlgn)$
+
+How to BuildMaxHeap using an array?
+- Start with empty, call HeapInsert n times?
+Obviously this is okay, but it costs much time($O(nlgn)$).
+- Use a dividing approach: keep merging smaller heaps into larger ones, until one single heap remains.
+After every merging, check if all parents are bigger than children, and swap if not.
