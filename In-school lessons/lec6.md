@@ -98,3 +98,19 @@ It's extremely hard to reach worst case, so in most cases time complexity of Qui
 ![algorithms](image/lec6/14.png)
 Even if we're not balanced, even very unbalanced like we divede into 1/10 size and 9/10 size, we can still reach $O(nlogn)$. As long as the partition is relatively balanced, we can have $O(nlogn)$ time complexity.
 
+To get the **average time cost** of QuickSort, we multiply the expected time and the probability, and then sum it together(expectation).
+
+For sorting problems we only focus on the **relative ordering** of the values instead of the absolute numbers.
+Therefore, the input array is a **permutation** of all possible permutations of input numbers.
+Assume that all permutations share an equal probability, to make analysis simple, we assume every number to be distinct.
+
+When we wanna know the average time cost, we assume the `Partition Process` produces a **mix of good and bad** splits.
+Further, for the sake of intuition, suppose that the good and bad splits **alternate** levels in the tree, and that the good splits are **best** case splits and the bad splits are **worst** case splits.
+The cost of “bad” Partition can be **absorbed** by recent “good” Partition
+In this way, the time is still $O(nlogn)$, illustrating the average time cost.
+
+Strictly prove it:
+Choose pivot (uniformly) **at random!**
+Since the choice is randomly made, there is a good chance(**constant probability**) that we choose a “good” pivot.
+We can swap the chosen pivot with the last element so we needn't change any code of our `Partition Process`.
+![algorithms](image/lec6/15.png)
