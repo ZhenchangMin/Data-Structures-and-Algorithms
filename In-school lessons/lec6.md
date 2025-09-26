@@ -73,3 +73,13 @@ Then recursively sort $B$ and $C$, and output $<B, x, C>$ stick them together, g
 
 ### Choosing the Pivot
 Ideally the pivot should partition the input into two parts of **roughly the same size** (we’ll see why later).
+But for every simple deterministic method of choosing pivot, we can construct corresponding bad input to make sort very slow.
+For now we choose the very last number as pivot.
+
+### The Partition Process
+![algorithms](image/lec6/7.png)
+This costs much space, and unstable.
+Can we turn space complexity into $O(1)$?
+![algorithms](image/lec6/8.png)
+From p to i, the elements are $\leq x$, and from i+1 to j, they are $>x$, and from j to r, yet to be compared.
+![algorithms](image/lec6/9.png)
