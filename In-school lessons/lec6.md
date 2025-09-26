@@ -82,4 +82,19 @@ This costs much space, and unstable.
 Can we turn space complexity into $O(1)$?
 ![algorithms](image/lec6/8.png)
 From p to i, the elements are $\leq x$, and from i+1 to j, they are $>x$, and from j to r, yet to be compared.
+
+### Time Complexity of QuickSort
 ![algorithms](image/lec6/9.png)
+The hardest part of anylyzing time of quick sort is to know how many recursions we have to do.
+![algorithms](image/lec6/10.png)
+We're not sure the left and right size divided by the pivot.
+![algorithms](image/lec6/11.png)
+The best case if when we're choosing the median of the array every time, thus creating two subarrays of same size.
+![algorithms](image/lec6/12.png)
+Use guess and verify to prove the time of worst case is $O(n^2)$
+![algorithms](image/lec6/13.png)
+And for best case we can calculate that getting $O(nlogn)$
+It's extremely hard to reach worst case, so in most cases time complexity of QuickSort is $O(nlogn)$ or slightly bigger than that.
+![algorithms](image/lec6/14.png)
+Even if we're not balanced, even very unbalanced like we divede into 1/10 size and 9/10 size, we can still reach $O(nlogn)$. As long as the partition is relatively balanced, we can have $O(nlogn)$ time complexity.
+
