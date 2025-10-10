@@ -250,3 +250,35 @@ Remember, the algorithm is deterministic and its behavior is determined entirely
 
 If we make c comparisons already, at most it produces $2^c$ different possible permutations, which must be greater than M.
 Therefore $2^c\geq n!$, and c is $lgn$
+
+### An Alternative View: Decision Trees
+![algorithms](image/lec6/34.png)
+![algorithms](image/lec6/35.png)
+Every node has 2 children(except leaves), because it only answers ye or no for every comparison query.
+And so the tree must have n! leaves, so the height must be $\geq lg(n!)$, meaning $\geq nlgn$, and the height is the number of comparisons.
+
+### Information Content(*not requested)
+Information content, or Self-information or Shannon information of an event x:
+$$
+I(x)=-logPr(x)=log\frac{1}{Pr(x)}
+$$
+If a highly likely event occurs, it carries very little information. In fact, a 100% likely event occurs, it has no information.
+On the other hand, if a highly unlikely event occurs, it is much more informative.
+
+Why use log?
+For 2 mutual independent events x and y, we want the information of event xy to be the sum of x and y information.
+So using log would give us the ability to sum.
+
+#### Information Entropy
+Given a discrete random variable $X$, which takes values in the alphabet $\mathcal{X}$ and is distributed as $Pr: \mathcal{X}\rightarrow [0,1]$
+The **entropy** $H(X)$ of a random variable X is the average level of "information", "surprise", or "uncertainty" inherent to the variable's possible outcomes.
+$$
+H(X)=\sum_{x\in\mathcal{X}}-Pr(X=x)logPr(X=x)=E[-logPr(X)]
+$$
+![algorithms](image/lec6/36.png)
+
+#### Information-theoretic Lower Bound
+![algorithms](image/lec6/37.png)
+
+## Non-comparison-based Sorting
+### Bucket Sort
