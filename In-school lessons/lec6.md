@@ -151,3 +151,30 @@ Usually use InsertionSort when is about 10 elements left.
 
 If we choose multiple pivot?
 ![algorithms](image/lec6/22.png)
+
+## The $nlgn$ Sorting Algorithms
+QuickSort, MergeSort and HeapSort are all nlgn. Which is better?
+- QuickSort is faster in most cases. Although it needs more comparison than MergeSort, it has much less **movement**(copies) of array elements.
+- HeapSort is the slowest among them, with poor locality of reference, but needs less amount of space.
+- MergeSort scanning the 2 arrays would take advantage in  handling slow-to-access sequential media, and partially pre-sorted input would be alot faster.
+
+## External Sorting(*not requested)
+External sorting is required when the data must reside in the slow external memory, usually a disk drive.
+There is one I/O between disk and memory, and I/O is very expensive at time.
+If we wonna sort big files we might want this algorithm.
+
+### Key Idea
+![algorithms](image/lec6/23.png)
+![algorithms](image/lec6/24.png)
+Look at this example.
+We read 1,5 and 3,19 into memory, and get 1,3 as the smallest, write them back into the disk.
+![algorithms](image/lec6/25.png)
+![algorithms](image/lec6/26.png)
+![algorithms](image/lec6/27.png)
+Repeating this we can sort the pages.
+Choosing one small element in the memory is little time compared with I/O.
+So we focus on the time we call I/O, and the cost is $2(M+N)$, M being length of list A and N is length of list B.
+
+If we have B lists, we need B+1 buffer pages in memory, and the I/O cost is the same.
+If we only have 3 buffer pages for B lists, just merge 2 lists at one time and recursively merge their results.
+
