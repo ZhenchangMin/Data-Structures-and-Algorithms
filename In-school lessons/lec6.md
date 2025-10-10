@@ -219,3 +219,34 @@ For the problem, key operation is check the $i$th element if it is 1.
 Every time the algorithm asks what the $i$th is, the adversary answers 0, so the algorithm keeps going.
 If he answers 1, the algorithm terminates, which is not what he wants.
 
+One absolutely crucial feature of this argument is that the adversary makes absolutely **no assumptions** about the algorithm.
+The adversary strategy can’t depend on some predetermined order of examining bits, and it doesn’t care about anything the algorithm might or might not do when it’s not looking at bits.
+
+However, as long as there are at least two different answers to the problem by the algorithm that are consistent with all answers given by the adversary, the algorithm cannot be done!(2 different outputs)
+
+### Adversary Argument for Comparison-based Sorting
+![algorithms](image/lec6/30.png)
+![algorithms](image/lec6/31.png)
+We set up the adversary, there're $n!$ permutations at first.
+
+The adversary can respond the question: "Is element i less than element j?"
+![algorithms](image/lec6/32.png)
+To make the algorithm take more time, the adversary responds the bigger one.
+When L=1, the attack from the adversary can terminate.
+
+![algorithms](image/lec6/33.png)
+In this way we get the lower bond of comparison-based sort.
+
+Therefore, sorting cannot be faster than $O(nlgn)$
+
+### Information-Theoretic Argument
+Consider the minimum number M of distinct outputs that a sorting algorithm must be able to produce to be able to sort any possible input of length n.
+$$
+M = n!
+$$
+The algorithm must be capable of outputting at least M different permutations, or there would exist some input that it was not capable of sorting.
+
+Remember, the algorithm is deterministic and its behavior is determined entirely by the results of the **comparisons**.
+
+If we make c comparisons already, at most it produces $2^c$ different possible permutations, which must be greater than M.
+Therefore $2^c\geq n!$, and c is $lgn$
