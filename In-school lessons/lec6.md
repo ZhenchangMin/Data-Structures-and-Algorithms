@@ -282,3 +282,35 @@ $$
 
 ## Non-comparison-based Sorting
 ### Bucket Sort
+Assume we already know each item is from the set [10], it is very easy to beat $O(nlogn)$
+Create 10 empty lists(buckets), scan through input and for each item append them to the end of the corresponding bucket.
+Then merge all the buckets and output the results.
+![algorithms](image/lec6/38.png)
+The time complexity is $O(n)$
+This can be referred to as rolling a dice, whose information content is much bigger than flipping a coin.
+
+In fact the time complexity is $\Theta(n+d)$, and d is the number of buckets(range of elements)
+When n is much smaller than d, it might still be slower than other sorts.
+
+However we can improve the bucket sort into a coarse-grained bucket.
+![algorithms](image/lec6/39.png)
+When sort within bucket, we can use bubble sort(or any other), and time is $O(k\times(\frac{n}{k})^2)=O(\frac{n^2}{k})$
+And the time complexity is $O(n+k+(\frac{n^2}{k}))$, which is $O(n)$ when k is roughly equal to n.
+
+If the array is not so uniform, the algorithm can turn into a $O(n^2)$ one.
+
+### Radix Sort
+Assume we want to sort $n$ decimal integers each of $d$-digits.
+![algorithms](image/lec6/40.png)
+The stable sort must satisfy that if a higher digit, the two number equal, compare their lower digit.
+
+We can use bucket sort as the stable sort here, and as we know they're all integers, only 10 buckets are needed.
+RadixSort can sort $n$ decimal $d$-digits numbers in $O(dn)$ time.
+
+### Lower Bound for Sorting by Querying the Value(bucket and radix sort)
+Use an adversary argument.
+The algorithm, which queries the input $n − 1$ times, does not solve the problem.
+Any algorithm which queries the input at most $n − 1$ times does not solve the problem.
+Solving the “sort n integers” problem by querying values of input has a time complexity of $\Omega(n)$.
+
+Must check all n elements or the sorting could be wrong.
