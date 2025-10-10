@@ -178,3 +178,44 @@ So we focus on the time we call I/O, and the cost is $2(M+N)$, M being length of
 If we have B lists, we need B+1 buffer pages in memory, and the I/O cost is the same.
 If we only have 3 buffer pages for B lists, just merge 2 lists at one time and recursively merge their results.
 
+## About Sorting Itself
+Can we have an algorithm smaller than $O(nlgn)$?
+This can be called **computational complexity theory**.
+
+### Upper bond and Lower bond
+Upper bound: how **fast** can we solve the problem?
+Lower bound: how **slow** solving the problem has to be?
+
+If we can enumerate all algorithms $A$ that solves problem $P$:
+![algorithms](image/lec6/28.png)
+Obviously this is just a definition and not practical. We can't enumerate the infinite ways to solve $P$.
+
+When upper and lower bound meet, we get a specific value, and meaning we got the answer.
+Therefore, we want larger lower bounds.
+
+#### Trivial Lower Bounds
+Lower Bound based on Output Size
+Any algorithm that for inputs of size $n$ has a worst-case output size of $f(n)$ needs to have a runtime of $Θ(f(n))$.
+The larger the lower bound, the more useful it is.
+
+How to get a tighter lower bound?
+
+### Adversary Argument
+Assume there is an adversary, for every algorithm solving P, he designs the worst input for the algorithm, and it must solve it.
+He must be informed of the **Key Operation** of the algorithm.
+
+Key Operation:
+Representative of the computation, represent or dominate other operations.
+![algorithms](image/lec6/29.png)
+
+Key operation of sorting: Comparison.
+
+Every time the algorithm does key operation, the adversary tries his best to make it do the most work.
+
+Example: check if a bit sequence has 1.
+
+For the problem, key operation is check the $i$th element if it is 1.
+
+Every time the algorithm asks what the $i$th is, the adversary answers 0, so the algorithm keeps going.
+If he answers 1, the algorithm terminates, which is not what he wants.
+
