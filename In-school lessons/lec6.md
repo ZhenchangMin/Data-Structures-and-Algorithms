@@ -140,3 +140,14 @@ This is a harmonic series, and we try to get the result.
 ![algorithms](image/lec6/20.png)
 ![algorithms](image/lec6/21.png)
 So the time complexity of qsort is nlgn, and has a high probability that it remains nlgn.
+
+### A bit more about qsort
+If there're many duplicates?
+Maintain 4 regions: $<pivot, =pivot, in process, >pivot$
+End up with three regions (“<”, “=”, and “>”), and only recurse into two ofthem (“<” and “>”): the more the duplicates, the less to recurse, and thebetter the algorithm!
+
+Stop recursion if it is small enough to solve.
+Usually use InsertionSort when is about 10 elements left.
+
+If we choose multiple pivot?
+![algorithms](image/lec6/22.png)
