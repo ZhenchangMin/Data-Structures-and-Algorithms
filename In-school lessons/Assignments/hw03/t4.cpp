@@ -2,41 +2,42 @@
 #include <vector>
 #include <numeric>
 #include <algorithm>
+#include <queue>
 using namespace std;
 using ll = long long;
 
 bool canSurvive(const vector<ll> &water, const vector<ll> &consume)
 {
-    ll total_water = accumulate(water.begin() + 1, water.end(), 0LL);
-    ll total_consume = accumulate(consume.begin() + 1, consume.end(), 0LL);
-    int n = water.size() - 1;
-    if (total_water < total_consume)
-        return false;
-    for (int i = 1; i <= n; i++)
+    for (int i = 1; i <= water.size() - 1; i++)
     {
         if (water[i] == 0)
-        {
             return false;
-        }
     }
     return true;
 }
 
-void reallocate(vector<ll> &water, const vector<ll> &consume)
+void reallocate(vector<ll> &water, const vector<ll> &consume, int min_consume_idx)
 {
     ll total_water = accumulate(water.begin() + 1, water.end(), 0LL);
-    
+    for (int i = 1; i <= water.size() - 1; i++)
+    {
+        if (i != min_consume_idx)
+        {
+            water[i] = consume[i];
+            total_water -= water[i];
+        }
+    }
+    water[min_consume_idx] = total_water;
 }
 
 bool canSurviveInfinite(const vector<ll> &water, const vector<ll> &consume)
 {
-    int n = water.size() - 1;
-    for (int i = 1; i <= n; i++)
+    for (int i = 1; i <= water.size() - 1; i++)
     {
-        if (consume[i] != 1 || water[i] < 1)
-        {
+        if (consume[i] != 1)
             return false;
-        }
+        if (water[i] < 1)
+            return false;
     }
     return true;
 }
@@ -56,14 +57,32 @@ int calculateMaxDays(const vector<ll> &a, const vector<ll> &m)
 {
     vector<ll> currWater = a;
     ll total_days = 0;
-    reallocate(currWater, m);
+    ll total_water = accumulate(a.begin() + 1, a.end(), 0LL);
+    int min_consume_idx = 1;
+    for (int i = 2; i <= a.size() - 1; i++)
+    {
+        if (m[i] < m[min_consume_idx])
+        {
+            min_consume_idx = i;
+        }
+    }
+    reallocate(currWater, m, min_consume_idx);
     if (canSurviveInfinite(currWater, m))
         return -1;
-    while (canSurvive(currWater, m))
+    if (!canSurvive(currWater, m))
+        return 0;
+    while (true)
     {
-        reallocate(currWater, m);
         currWater = shrinkWater(currWater, m);
-        total_days++;
+        if (!canSurvive(currWater, m))
+            break;
+        else
+        {
+            total_days++;
+            reallocate(currWater, m, min_consume_idx);
+            if (canSurviveInfinite(currWater, m))
+                return -1;
+        }
     }
     return total_days;
 }
