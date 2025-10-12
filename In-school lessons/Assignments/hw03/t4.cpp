@@ -3,104 +3,75 @@
 #include <numeric>
 #include <algorithm>
 #include <queue>
+#include <unordered_map>
 using namespace std;
 using ll = long long;
 
-bool canSurvive(const vector<ll> &water, const vector<ll> &consume)
+inline bool canSurvive(ll total_water, int n)
 {
-    for (int i = 1; i <= water.size() - 1; i++)
-    {
-        if (water[i] == 0)
-            return false;
-    }
-    return true;
+    return total_water >= n;
 }
 
-void reallocate(vector<ll> &water, const vector<ll> &consume, int min_consume_idx)
+inline bool canSurviveInfinite(ll total_water, ll total_consume, int n)
 {
-    ll total_water = accumulate(water.begin() + 1, water.end(), 0LL);
-    for (int i = 1; i <= water.size() - 1; i++)
-    {
-        if (i != min_consume_idx)
-        {
-            water[i] = consume[i];
-            total_water -= water[i];
-        }
-    }
-    water[min_consume_idx] = total_water;
+    return n == total_consume && total_water >= total_consume;
 }
 
-bool canSurviveInfinite(const vector<ll> &water, const vector<ll> &consume)
+int calculateMaxDays(ll total_water, ll total_consume, int n, ll min_m)
 {
-    for (int i = 1; i <= water.size() - 1; i++)
-    {
-        if (consume[i] != 1)
-            return false;
-        if (water[i] < 1)
-            return false;
-    }
-    return true;
-}
-
-vector<ll> shrinkWater(const vector<ll> &water, const vector<ll> &consume)
-{
-    int n = water.size() - 1;
-    vector<ll> newWater(n + 1, 0);
-    for (int i = 1; i <= n; i++)
-    {
-        newWater[i] = water[i] / consume[i];
-    }
-    return newWater;
-}
-
-int calculateMaxDays(const vector<ll> &a, const vector<ll> &m)
-{
-    vector<ll> currWater = a;
-    ll total_days = 0;
-    ll total_water = accumulate(a.begin() + 1, a.end(), 0LL);
-    int min_consume_idx = 1;
-    for (int i = 2; i <= a.size() - 1; i++)
-    {
-        if (m[i] < m[min_consume_idx])
-        {
-            min_consume_idx = i;
-        }
-    }
-    reallocate(currWater, m, min_consume_idx);
-    if (canSurviveInfinite(currWater, m))
-        return -1;
-    if (!canSurvive(currWater, m))
+    if (!canSurvive(total_water, n))
         return 0;
-    while (true)
+    if (canSurviveInfinite(total_water, total_consume, n))
+        return -1;
+
+    ll r = min_m;
+    ll days = 0;
+
+    if (r == 1)
     {
-        currWater = shrinkWater(currWater, m);
-        if (!canSurvive(currWater, m))
-            break;
-        else
-        {
-            total_days++;
-            reallocate(currWater, m, min_consume_idx);
-            if (canSurviveInfinite(currWater, m))
-                return -1;
-        }
+        ll loss = total_consume - n;
+        if (total_water < n)
+            return 0;
+        if (loss <= 0)
+            return -1;
+        return (ll)((total_water - n) / loss);
     }
-    return total_days;
+
+    while (total_water >= n)
+    {
+        ll next = (total_water - total_consume + r) / r + (n - 1);
+        if (next < n)
+            break;
+        total_water = next;
+        days++;
+    }
+
+    return (ll)days;
 }
 
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-    cout.tie(nullptr);
 
     int n, q;
     cin >> n >> q;
-
     vector<ll> a(n + 1), m(n + 1);
+    ll total_water = 0, total_consume = 0;
+    int min_idx = 1;
+
     for (int i = 1; i <= n; i++)
+    {
         cin >> a[i];
+        total_water += a[i];
+    }
     for (int i = 1; i <= n; i++)
+    {
         cin >> m[i];
+        total_consume += m[i];
+        if (m[i] < m[min_idx])
+            min_idx = i;
+    }
 
     while (q--)
     {
@@ -111,6 +82,7 @@ int main()
             int i;
             ll x;
             cin >> i >> x;
+            total_water += x - a[i];
             a[i] = x;
         }
         else if (op == 2)
@@ -118,14 +90,20 @@ int main()
             int i;
             ll x;
             cin >> i >> x;
+            total_consume += x - m[i];
             m[i] = x;
+            if (x < m[min_idx])
+                min_idx = i;
+            else if (i == min_idx)
+            {
+                min_idx = min_element(m.begin() + 1, m.end()) - m.begin();
+            }
         }
         else if (op == 3)
         {
-            int result = calculateMaxDays(a, m);
-            cout << result << '\n';
+            int ans = calculateMaxDays(total_water, total_consume, n, m[min_idx]);
+            cout << ans << '\n';
         }
     }
-
     return 0;
 }
