@@ -3,6 +3,10 @@
 using namespace std;
 using ull = unsigned long long;
 
+void mergeSort(vector<ull> &a){
+    
+}
+
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
@@ -16,6 +20,12 @@ int main(){
         for(int i = 0; i < n; i++){
             cin >> a[i];
         }
+        mergeSort(a);
+        cout << '!' << '\n';
+        for(const auto &x : a){
+            cout << x << ' ';
+        }
+        cout << '\n';
     }
     return 0;
 }
