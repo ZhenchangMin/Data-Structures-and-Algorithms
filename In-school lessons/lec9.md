@@ -54,4 +54,35 @@ Then the successor is the nearest ancestor of x whose left child is also an ance
 ![1760671899345](image/lec9/1760671899345.png)
 
 ### Insert in BST
+BSTInsert(T,z): Add z to BST T. Notice, insertion **should not break** the BST property.
+Just like doing a search in T with key `z.key`. 
+This search will fail and **end at a leaf** `y`. Insert z as left or right child of `y`.
+![1760672161821](image/lec9/1760672161821.png)
+Reach leaf 32 at last and as 36 larger than 32, add to right child of 32.
 
+$O(h)$ where h is the height of the tree.
+
+### Remove in BST
+BSTRemove(T,z): Remove element z from T. Notice, removal should not break the BST property.
+
+Case 1: z has no children.
+Easily remove z by setting its parent's corresponding pointer to NULL, and delete z.
+
+Case 2: z has one child.
+Replace z with its child, and update its parent's pointer to point to its child.
+
+Case 3: z has 2 children.
+We must choose either its left or right subtree to replace z, or it would be not connected.
+Choose z's successor(or predecessor) to replace z.
+As it is a successor, the right subtree would be bigger than it if replace z with its successor.
+
+But if z.right.left is empty? How to choose z's successor?
+Just choose z.right as its successor! And replace z with z.right.
+
+If z.right.left is not empty, find the left most node to replace z, and the children of the successor take over the original position of the successor.
+![1760672689519](image/lec9/1760672689519.png)
+![1760672701941](image/lec9/1760672701941.png)
+Use BST to implement the Dictionary ADT.
+![1760672726277](image/lec9/1760672726277.png)
+
+### Height of BST
