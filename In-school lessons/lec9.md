@@ -86,3 +86,12 @@ Use BST to implement the Dictionary ADT.
 ![1760672726277](image/lec9/1760672726277.png)
 
 ### Height of BST
+The height could be $O(n)$ in the worst case, and $O(\log n)$ in the best case.
+Definitely we want the height to be $O(\log n)$, so that we could be fast in search, insert, and remove.
+
+Choosing the first element from the sequence is in fact choosing a pivot and create partitions!
+The left subtree is smaller than the pivot, and the right subtree is larger than the pivot.
+A random insertion is like **quickSort**, randomly choosing pivot and to create partitions.
+So the expected height of a BST is $O(\log n)$.
+
+##
