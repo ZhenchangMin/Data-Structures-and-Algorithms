@@ -1,3 +1,7 @@
+// overall: pair up the nodes, and ask each pair if an edge exist.
+// if no edge exist, can't be a flower.
+// if more than one exist, can't either.
+// only one pair has edge between, see if one is connected to 3 nodes, to be one flower.
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -13,16 +17,18 @@ int main()
     {
         int n;
         cin >> n;
-        vector<vector<int>> hasEdge(n + 1, vector<int>(n + 1, 0));
         int curr_index = 1;
         int total = 0;
         vector<pair<int, int>> hasEdgeBetween;
         for (int i = curr_index + 1; i <= n; i += 2)
         {
             cout << '?' << ' ' << curr_index << ' ' << i << endl;
-            cin >> hasEdge[curr_index][i];
-            total += hasEdge[curr_index][i];
-            hasEdgeBetween.push_back({curr_index, i});
+            int tmp;
+            cin >> tmp;
+            total += tmp;
+            if (tmp == 1){
+                hasEdgeBetween.push_back({curr_index, i});
+            }
             curr_index += 2;
         }
         if (total == 0 || total > 1)

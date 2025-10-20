@@ -19,7 +19,7 @@ int main()
         case 1:
         {
             string number;
-            cin >> number;
+            cin >> number;// 必须先把number读进来，不然会乱
             if (planes.size() < m)
             {
                 planes.push_back(number);

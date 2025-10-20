@@ -9,6 +9,8 @@ int main(){
     int n, k;
     cin >> n >> k;
     vector<string> operations;// 先把n个指令读入数组，再一一执行，直到达到上限k
+    // vector在每次pushback的时候才会分配内存，所以如果不用pushback，需要提前分配好内存
+    // operations.reserve(n);
     int temp = n;
     while(temp--){
         string op;
@@ -24,7 +26,7 @@ int main(){
             operations.push_back("cp " + to_string(index)); // 字符串和int不能直接拼接
         }
     }
-    int size = n;
+    int size = n; // 现在时刻存储的指令数量
     for(int i = 0; i < size; i++){
         if (operations[i][0] == 'e')
         {
