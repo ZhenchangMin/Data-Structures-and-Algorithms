@@ -13,28 +13,65 @@ int main()
     {
         int n;
         cin >> n;
-        bool hasEdge = false;
-
-        vector<int> nodes;
-        for (int i = 1; i <= min(n, 6); i++)
-            nodes.push_back(i);
-
-        for (int i = 1; i <= nodes.size() && !hasEdge; i++)
+        vector<vector<int>> hasEdge(n + 1, vector<int>(n + 1, 0));
+        int curr_index = 1;
+        int total = 0;
+        vector<pair<int, int>> hasEdgeBetween;
+        for (int i = curr_index + 1; i <= n; i += 2)
         {
-            for (int j = i + 1; j <= nodes.size() && !hasEdge; j++)
-            {
-                int ans;
-                cout << '?' << ' ' << nodes[i] << ' ' << nodes[j] << endl;
-                cin >> ans;
-                if (ans == 1)
-                    hasEdge = true;
-            }
+            cout << '?' << ' ' << curr_index << ' ' << i << endl;
+            cout.flush();
+            cin >> hasEdge[curr_index][i];
+            total += hasEdge[curr_index][i];
+            hasEdgeBetween.push_back({curr_index, i});
+            curr_index = i + 1;
         }
-
-        if (hasEdge)
+        if (total == 0 || total > 1)
+        {
             cout << "! 1" << endl;
-        else
+            cout.flush();
+            continue;
+        }
+        int left = hasEdgeBetween[0].first;
+        int right = hasEdgeBetween[0].second;
+        int leftForward = left - 1 > 0 ? left - 1 : n;
+        int leftForwardTwo = leftForward - 1 > 0 ? leftForward - 1 : n;
+        int rightForward = right + 1 <= n ? right + 1 : 1;
+        int rightForwardTwo = rightForward + 1 <= n ? rightForward + 1 : 1;
+        cout << '?' << ' ' << leftForward << ' ' << left << endl;
+        cout.flush();
+        int leftForwardResult;
+        cin >> leftForwardResult;
+        cout << '?' << ' ' << rightForward << ' ' << right << endl;
+        cout.flush();
+        int rightForwardResult;
+        cin >> rightForwardResult;
+        if (leftForwardResult == 0 && rightForwardResult == 0)
+        {
+            cout << "! 1" << endl;
+            cout.flush();
+            continue;
+        }
+        int possibleRoot = leftForwardResult == 1 ? left : right;
+        int rootForward = leftForwardResult == 1 ? leftForward - 1 : rightForward + 1;
+        rootForward = rootForward > 0 ? rootForward : n;
+        rootForward = rootForward <= n ? rootForward : 1;
+        cout << '?' << ' ' << possibleRoot << ' ' << rootForward << endl;
+        cout.flush();
+        int rootForwardResult;
+        cin >> rootForwardResult;
+        if (rootForwardResult == 1)
+        {
             cout << "! 2" << endl;
+            cout.flush();
+            continue;
+        }
+        else
+        {
+            cout << "! 1" << endl;
+            cout.flush();
+            continue;
+        }
     }
     return 0;
 }
