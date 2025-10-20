@@ -23,7 +23,7 @@ int main()
             cin >> hasEdge[curr_index][i];
             total += hasEdge[curr_index][i];
             hasEdgeBetween.push_back({curr_index, i});
-            curr_index = i + 1;
+            curr_index += 2;
         }
         if (total == 0 || total > 1)
         {
@@ -32,33 +32,40 @@ int main()
         }
         int left = hasEdgeBetween[0].first;
         int right = hasEdgeBetween[0].second;
-        int leftForward = left - 1 > 0 ? left - 1 : n;
-        int leftForwardTwo = leftForward - 1 > 0 ? leftForward - 1 : n;
-        int rightForward = right + 1 <= n ? right + 1 : 1;
-        int rightForwardTwo = rightForward + 1 <= n ? rightForward + 1 : 1;
-        cout << '?' << ' ' << leftForward << ' ' << left << endl;
-        int leftForwardResult;
-        cin >> leftForwardResult;
-        cout << '?' << ' ' << rightForward << ' ' << right << endl;
-        int rightForwardResult;
-        cin >> rightForwardResult;
-        if (leftForwardResult == 0 && rightForwardResult == 0)
-        {
+        int leftSmaller = left - 1;
+        if (leftSmaller == 0) leftSmaller = n;
+        int rightBigger = right + 1;
+        if (rightBigger == n + 1) rightBigger = 1;
+        int leftBool, rightBool;
+        cout << '?' << ' ' << left << ' ' << leftSmaller << endl;
+        cin >> leftBool;
+        cout << '?' << ' ' << right << ' ' << rightBigger << endl;
+        cin >> rightBool;
+        if(leftBool == 0 && rightBool ==0){
             cout << "! 1" << endl;
             continue;
         }
-        int possibleRoot = leftForwardResult == 1 ? left : right;
-        int rootForward = leftForwardResult == 1 ? leftForwardTwo: rightForwardTwo;
-        cout << '?' << ' ' << possibleRoot << ' ' << rootForward << endl;
-        int rootForwardResult;
-        cin >> rootForwardResult;
-        if (rootForwardResult == 1)
-        {
-            cout << "! 2" << endl;
-            continue;
-        }
-        else
-        {
+        else{
+            int root = leftBool == 1 ? left : right;
+            if(root == left){
+                cout << '?' << ' ' << left << ' ' << rightBigger << endl;
+                int res;
+                cin >> res;
+                if (res){
+                    cout << "! 2" << endl;
+                    continue;
+                }
+            }
+            else{
+                cout << '?' << ' ' << right << ' ' << leftSmaller << endl;
+                int res;
+                cin >> res;
+                if (res)
+                {
+                    cout << "! 2" << endl;
+                    continue;
+                }
+            }
             cout << "! 1" << endl;
             continue;
         }
