@@ -1,41 +1,58 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <random>
+#include <cstdio>
+#include <cstdlib>
+#define getchar_unlocked getchar
 using namespace std;
 
-using ll = long long;
+using ull = unsigned long long;
 
 struct Child
 {
-    ll a, w;
+    ull a, w;
 };
+
+inline void fast_read(ull &x)
+{
+    x = 0;
+    int c = getchar_unlocked();
+    while (c < '0' || c > '9')
+        c = getchar_unlocked();
+    while (c >= '0' && c <= '9')
+    {
+        x = x * 10 + (c - '0');
+        c = getchar_unlocked();
+    }
+}
 
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int N;
-    cin >> N;
-    vector<Child> c(N);
-    for (int i = 0; i < N; ++i)
+    ull N;
+    fast_read(N);
+    vector<Child> children(N);
+    for (int i = 0; i < N; i++)
     {
-        cin >> c[i].a >> c[i].w;
+        fast_read(children[i].a);
+        fast_read(children[i].w);
     }
 
-    sort(c.begin(), c.end(), [](const Child &x, const Child &y)
+    sort(children.begin(), children.end(), [](const Child &x, const Child &y)
         { return x.a < y.a; });
 
-    ll total = 0;
-    for (auto &x : c)
+    ull total = 0;
+    for (auto &x : children)
         total += x.w;
 
-    ll half_lower = total / 2, half_upper = (total + 1) / 2;
-    ll preSum = 0, res = -1;
-    for (auto x : c)
+    ull half_lower = total / 2, half_upper = (total + 1) / 2;
+    ull preSum = 0, res = -1;
+    for (auto x : children)
     {
-        ll left = preSum, right = total - left - x.w;
-        if (left < half_lower && right <= half_upper)
+        if (preSum < half_lower && total - preSum - x.w <= half_upper)
         {
             res = x.a;
             break;
