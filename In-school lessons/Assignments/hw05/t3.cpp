@@ -3,36 +3,46 @@
 #include <algorithm>
 using namespace std;
 
-using ull = unsigned long long;
+using ll = long long;
+
+struct Child
+{
+    ll a, w;
+};
 
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    ull N;
+    int N;
     cin >> N;
-    vector<pair<ull, ull>> kids(N);
-    for (int i = 0; i < N; i++)
+    vector<Child> c(N);
+    for (int i = 0; i < N; ++i)
     {
-        cin >> kids[i].first >> kids[i].second;
+        cin >> c[i].a >> c[i].w;
     }
 
-    sort(kids.begin(), kids.end());
+    sort(c.begin(), c.end(), [](const Child &x, const Child &y)
+        { return x.a < y.a; });
 
-    ull total = 0;
-    for (auto &p : kids)
-        total += p.second;
+    ll total = 0;
+    for (auto &x : c)
+        total += x.w;
 
-    ull prefix = 0;
-    for (int i = 0; i < N; i++)
+    ll half_lower = total / 2, half_upper = (total + 1) / 2;
+    ll preSum = 0, res = -1;
+    for (auto x : c)
     {
-        prefix += kids[i].second;
-        if (prefix * 2 >= total)
+        ll left = preSum, right = total - left - x.w;
+        if (left < half_lower && right <= half_upper)
         {
-            cout << kids[i].first << "\n";
-            return 0;
+            res = x.a;
+            break;
         }
+        preSum += x.w;
     }
+
+    cout << res << '\n';
     return 0;
 }
