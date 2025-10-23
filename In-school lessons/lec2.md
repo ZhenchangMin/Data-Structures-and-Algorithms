@@ -2,7 +2,7 @@
 ## Algorithm Evaluation
 There're many algorithms to solve a problem, which is better?
 Implementation(language, compiler, hardware) and environment matters.
-C is faster than most other languages.
+In most cases, C is faster than most other languages.
 
 ## Model of Computation: Turing Machine
 This is independent of previous factors.
@@ -44,7 +44,7 @@ Usually, while checking the correctness of an algorithm it is easier to separate
 
 ### Partial correctness
 An algorithm is partially correct if satisfies the following condition: 
-If the algorithm receiving correct input data stops then its result is correct
+If the algorithm receiving correct input data stops and outputing the desired result, then it is partially correct.
 If doesn't stop, for any case it is partial correct.
 ![1757036595664](image/lec2/1757036595664.png)
 
@@ -56,8 +56,8 @@ A proof of total correctness of an algorithm usually assumes 2 steps:
 2.(to prove that) the algorithm is partial correct
 
 proof methods:
-Variants （变式） for "termination"
-Invariants（不变式） for "partial correctness"
+Variants for "termination"
+Invariants for "partial correctness"
 
 ### Example: Insertion Sort
 ![1757038492550](image/lec2/1757038492550.png)
