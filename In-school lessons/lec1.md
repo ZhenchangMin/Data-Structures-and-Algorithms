@@ -1,8 +1,7 @@
 # Lec1 Intro
 ## What is *Algorithm*
 Any **well-defined** computational procedure that takes some value(s) as **input** and produces some value(s) as **output**.
-Another perspective: we can also see an algorithm as a tool/method for 
-solving a well-specified computational problem
+Another perspective: we can also see an algorithm as a tool/method for solving a well-specified computational problem.
 ### Well-defined means?
 Problem specified, like sorting a list of numbers, and the procedures should be **clear** and **unambiguous**
 **Ill-defined**, like "find the best move in chess", "write a good novel"
