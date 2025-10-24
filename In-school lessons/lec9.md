@@ -185,3 +185,29 @@ Summing up:
 ![1761274865222](image/lec9/1761274865222.png)
 
 ### Remove Node from RB-Tree
+Recall the removal in BST:
+![1761275258122](image/lec9/1761275258122.png)
+4 different cases:
+![1761275284159](image/lec9/1761275284159.png)
+These are called structurally delete cases.
+
+- If z’s right child is an external node (**leaf**) , then z is the node to be deleted **structurally**: subtree rooted at z.left will replace z.
+- If z’s right child is an internal node, then let y be the  node in subtree rooted at z.right. Overwrite z’s info with y’s info, and y is the node to be deleted structurally: subtree rooted at y.right will replace y.
+
+powerpoint page 26
+
+
+
+## Skip Lists
+A special form of linked list.
+Traditional linked list is not efficient at removing a node, because we need to traverse from the very beginning to find the node to be removed, one element at a time so very slow.
+Can we skip some nodes to speed up the removal?
+![1761275853758](image/lec9/1761275853758.png)
+We can represented it as two linked lists — one for **express stops** and one for **all stops**.
+![1761275995052](image/lec9/1761275995052.png)
+We can turn this into binary search.
+So search becomes more efficient, $O(\log n)$ time.
+
+### The Real Skip List
+![1761276365083](image/lec9/1761276365083.png)
+Not finished yet.
