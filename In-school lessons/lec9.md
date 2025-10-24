@@ -94,4 +94,94 @@ The left subtree is smaller than the pivot, and the right subtree is larger than
 A random insertion is like **quickSort**, randomly choosing pivot and to create partitions.
 So the expected height of a BST is $O(\log n)$.
 
-##
+## Treaps
+A treap is a binary tree in which each node has a key value and a priority value.
+The key values follow the BST property, meaning that 
+- For every node x in the tree, if y is a node in the left subtree of x, then $y.key \leq x.key$.
+- For every node x in the tree, if y is a node in the right subtree of x, then $y.key \geq x.key$.
+
+The priority values follow the min-heap property, for every node x in the tree, if y is a node in the left or right subtree of x, then $y.priority \geq x.priority$.
+![1761271284370](image/lec9/1761271284370.png)
+
+### Uniqueness of Treaps
+Given a set of `n` nodes with distinct key values and distinct priority values, a unique Treap is determined.
+By induction we can prove this.
+
+### How to Build a Treap
+Starting from an empty Treap, whenever we are given a node x that needs to be added, we assign a **random priority** for node x, and insert the node into the Treap.
+Another view: a BST built with insertions, in the order of **increasing priorities**.
+
+A Treap is like a randomly built BST, regardless of the **order** of the insert operations! (Since we use random priorities!)
+So we just sort the nodes by priorities, and insert them into the Treap using BSTInsert.
+
+### Insert in Treap
+Step 1: Assign a random priority to node x.
+Step 2: Insert node x into the Treap using BSTInsert.
+Step 3: Fix the min-heap property without breaking the BST property.
+
+![1761272467609](image/lec9/1761272467609.png)
+Use **rotation** to fix the min-heap property.
+![1761272616344](image/lec9/1761272616344.png)
+![1761272624850](image/lec9/1761272624850.png)
+![1761272633490](image/lec9/1761272633490.png)
+Once we find a node x that breaks the min-heap property, we rotate it to fix the property.
+Use rotations to push-up these nodes until the min-heap property is restored.
+
+### Remove in Treap
+Just invert the insert operation.
+Step 1: Use rotations to push-down the node till it is a **leaf**.
+Step 2: Remove the **leaf**.
+
+## Red-Black Trees
+Can we have a data structure supporting ordered dictionary operations in $O(log n)$ time, **even in worst-case**?
+A balanced n-node BST has height $O(\log n)$, which is what we want.
+
+A Red-Black Tree is a BST in which each node has a color, satisfying:
+- A node is either red or black.
+- The root is black.
+- Every leaf (NIL) is black.
+- If a node is red, then both its children are black.(no red edge)
+- For each node, all simple paths from the node to descendant leaves contain the same number of black nodes.(black height)
+
+### Black Height
+Call the number of black nodes on any simple path from a node x (not including x) to a descendant leaf the **black height** of x, denoted as $bh(x)$.
+From the black-height perspective, RB-Trees are “perfectly balanced”.
+Due to the no-red-edge property, the height of the whole tree does not deviate a lot from its black height.
+
+In a RB-Tree, the subtree rooted at x contains at least $2^{bh(x)} - 1$ internal nodes.
+
+### Insert Node into RB-Tree
+Now we wonna insert node z into the RB-Tree.
+Step 1: Color z as red(so that maintains the black-height property).
+Step 2: Insert z into the RB-Tree as if the RB-Tree is a regular BST.
+Step 3: Fix the RB-Tree property.
+
+How to fix?
+If z has a black parent after Step 2, then no further fix is needed.
+
+In the fix step, z no longer represents the inserted node, but the node to be fixed.
+Step 3: Fix the RB-Tree property
+- Case 0: z becomes the root, just recolor it as black.
+- Case 1: z has a red parent, and z has **a black grandparent and a red uncle**.
+![1761273912465](image/lec9/1761273912465.png)
+Fix: recolor z’s parent and uncle to black, recolor z’s grandparent to red
+![1761274217880](image/lec9/1761274217880.png)
+But we might push-up the violation! Turn to case 2 for further fix.
+![1761274278022](image/lec9/1761274278022.png)
+
+- Case 2: z’s **parent is red, has black uncle y** 
+(a) z is **right child** of its parent.
+Left-rotate at z's parent:
+![1761274683346](image/lec9/1761274683346.png)
+![1761274702055](image/lec9/1761274702055.png)
+Then turn to case 2(b).
+
+(b) z is **left child** of its parent.
+Right-rotate at z's grandparent, recolor z's grandparent and parent:
+![1761274809311](image/lec9/1761274809311.png)
+![1761274827114](image/lec9/1761274827114.png)
+
+Summing up:
+![1761274865222](image/lec9/1761274865222.png)
+
+### Remove Node from RB-Tree
