@@ -4,7 +4,7 @@ A data structure is a way to store and organize data in order to facilitate acce
 
 ## Abstract Data Type(ADT)
 A data structure usually provides an interface, also called an ADT
-An ADT speci es what a data structure "can do" and "should do", but not how to do them.
+An ADT specifies what a data structure "can do" and "should do", but not how to do them.
 **Example:**
 ADT: `List`, supports `get`, `set`, `remove`, `add` ...
 Data Structure: `Linked List`, `Array List` ...
@@ -20,7 +20,7 @@ The first-in-first-out Quene, items are removed in the same order as they're add
 - Remove() or Dequeue(): remove the first item from the queue
 
 #### LIFO Quene: Stack
-The most recently adder item is the next to be removed.
+The most recently added item is the next to be removed.
 - Add(x) or Push(x): add x to the top of the stack
 - Remove() or Pop(): remove the item a the top of the stack
 
@@ -36,10 +36,10 @@ A Deque is a generalization of FIFO and LIFO Quene, and can implement both of th
 ### The List ADT
 A List is a sequence of items and keeping track on their index, supporting:
 - Size(): return n, the length of the list
-- Get(i): return xi
-- Set(i,x): set xi = x
-- Add(i,x): set xj+1 = xj for n ≥ j ≥ i, set xi = x, increase list size by 1
-- Remove(i): set xj = xj+1 for n − 1 ≥ j ≥ i, decrease list size by 1
+- Get(i): return $x_i$
+- Set(i,x): set $x_i = x$
+- Add(i,x): set $x_{j+1} = x_j$ for n ≥ j ≥ i, set $x_i = x$, increase list size by 1
+- Remove(i): set $x_j = x_{j+1}$ for n − 1 ≥ j ≥ i, decrease list size by 1
 
 List can implement Deque.
 
