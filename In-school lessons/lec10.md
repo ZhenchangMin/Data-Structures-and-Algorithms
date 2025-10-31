@@ -30,3 +30,26 @@ Keys are not that random (they usually have **patterns**)
 
 ## Design Hash Functions
 ![1761876207593](image/lec10/1761876207593.png)
+
+### The Division Method
+Common technique when designing hash functions
+
+Example:
+Hash function: h(k) = k mod m
+Two keys collide if k1 ≡ k2 (mod m)
+How to select m?
+![1761876698770](image/lec10/1761876698770.png)
+![1761876774051](image/lec10/1761876774051.png)
+
+### The Multiplication Method
+
+
+
+### Universal Hashing
+Once hash function is **fixed and known**, there must exist a set of “bad” keys that hash to the same value.
+Such **adversarial input** will result in poor performance!
+
+Use randomization!
+Pick a **random** hash function $h$ when the hash table is first built.
+Universal Hash Family
+A collection of hash functions $\mathcal{H}$ 

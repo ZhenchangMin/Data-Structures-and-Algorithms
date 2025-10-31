@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <cstring>
 #include <functional>
+#include <unordered_set>
 #include <cstdio>
 
 using namespace std;
@@ -15,9 +15,7 @@ struct Node {
 };
 vector<Node> tree(MAXN);
 vector<vector<int>> adj(MAXN);
-vector<bool> is_candidate(MAXN, false);
-vector<int> candidates;
-vector<int> subtree_size(MAXN, 0);
+unordered_set<int> candidate_set;
 
 int ask(int u, int v) {
     printf("? %d %d\n", u, v);
@@ -32,9 +30,11 @@ void build_adj() {
         adj[i].clear();
         if (tree[i].left) {
             adj[i].push_back(tree[i].left);
+            tree[tree[i].left].parent = i;
         }
         if (tree[i].right) {
             adj[i].push_back(tree[i].right);
+            tree[tree[i].right].parent = i;
         }
         if (tree[i].parent) {
             adj[i].push_back(tree[i].parent);
@@ -42,195 +42,188 @@ void build_adj() {
     }
 }
 
-void dfs_subtree_size(int u, int p) {
-    subtree_size[u] = is_candidate[u] ? 1 : 0;
-    for (int v : adj[u]) {
-        if (v != p) {
-            dfs_subtree_size(v, u);
-            subtree_size[u] += subtree_size[v];
+int calc_subtree_size(int u, int parent) {
+    int size = 0;
+    function<void(int, int)> dfs = [&](int node, int p) {
+        if (candidate_set.count(node) == 0) return;
+        size++;
+        for (int v : adj[node]) {
+            if (v != p) {
+                dfs(v, node);
+            }
         }
-    }
+    };
+    dfs(u, parent);
+    return size;
 }
 
-void collect_branch_nodes(int u, int parent, vector<int>& result) {
-    if (!is_candidate[u]) return;
-    result.push_back(u);
-    for (int v : adj[u]) {
-        if (v != parent) {
-            collect_branch_nodes(v, u, result);
-        }
+int find_centroid(int root) {
+    int total = calc_subtree_size(root, 0);
+    if (total <= 1) {
+        return root;
     }
-}
-
-int find_centroid() {
-    if (candidates.empty()) return -1;
-    if (candidates.size() == 1) return candidates[0];
     
-    int root = candidates[0];
-    dfs_subtree_size(root, -1);
-    
-    int total_size = candidates.size();
-    int best_centroid = root;
-    int min_max_component = total_size + 1;
-    
-    for (int u : candidates) {
-        int max_component = 0;
+    int centroid = -1;
+    function<int(int, int)> dfs_centroid = [&](int u, int p) -> int {
+        int size = 1;
+        int max_subtree = 0;
         
         for (int v : adj[u]) {
-            int comp_size;
-            if (v == tree[u].parent) {
-                comp_size = total_size - subtree_size[u];
-            } else {
-                comp_size = subtree_size[v];
-            }
-            if (comp_size > 0) {
-                max_component = max(max_component, comp_size);
-            }
+            if (v == p || candidate_set.count(v) == 0) continue;
+            int sub_size = dfs_centroid(v, u);
+            size += sub_size;
+            max_subtree = max(max_subtree, sub_size);
         }
         
-        if (max_component < min_max_component) {
-            min_max_component = max_component;
-            best_centroid = u;
+        int remaining = total - size;
+        if (max_subtree * 2 <= total && remaining * 2 <= total && centroid == -1) {
+            centroid = u;
         }
-    }
+        
+        return size;
+    };
     
-    return best_centroid;
+    dfs_centroid(root, 0);
+    return (centroid != -1) ? centroid : root;
 }
 
-vector<int> get_branches(int centroid) { 
-    vector<int> branches;
-    int total_size = candidates.size();
-    
-    for (int v : adj[centroid]) {
-        if (v == tree[centroid].parent) {
-            if (subtree_size[centroid] < total_size) {
-                branches.push_back(v);
-            }
-        } else {
-            if (subtree_size[v] > 0) {
-                branches.push_back(v);
-            }
+void collect_branch_nodes_set(int u, int parent, unordered_set<int>& result_set) {
+    if (candidate_set.count(u) == 0) return; 
+    result_set.insert(u);
+    for (int v : adj[u]) {
+        if (v != parent) {
+            collect_branch_nodes_set(v, u, result_set);
         }
     }
-    return branches;
 }
 
 void solve() {
-    while (candidates.size() > 1) {
-        int cand_size = candidates.size();
-        
-        if (cand_size == 2) {
-            int a = candidates[0], b = candidates[1];
-            int res = ask(a, b);
-            if (res == 0 || res == 1) {
-                candidates = {a};
-            } else {
-                candidates = {b};
-            }
-            break;
-        }
-        
-        int centroid = find_centroid();
-        
-        dfs_subtree_size(centroid, -1);
-        vector<int> branches = get_branches(centroid);
-        
-        vector<vector<int>> branch_nodes(branches.size());
-        for (int i = 0; i < branches.size(); i++) {
-            collect_branch_nodes(branches[i], centroid, branch_nodes[i]);
-        }
-        
-        if (branches.empty()) {
-            candidates = {centroid};
-            continue;
-        }
-        
-        if (branches.size() == 1) {
-            int res = ask(centroid, branches[0]);
-            vector<int> new_candidates;
-            
-            if (res == 0) {
-                new_candidates.push_back(centroid);
-                vector<bool> in_branch(MAXN, false);
-                for (int x : branch_nodes[0]) in_branch[x] = true;
-                
-                for (int node : candidates) {
-                    if (node != centroid && !in_branch[node]) {
-                        new_candidates.push_back(node);
-                    }
-                }
-            } else {
-                new_candidates = branch_nodes[0];
-            }
-            
-            for (int node : candidates) is_candidate[node] = false;
-            candidates = new_candidates;
-            for (int node : candidates) is_candidate[node] = true;
-            
+    int cand_size = candidate_set.size();
+    if (cand_size == 1) {
+        printf("! %d\n", *candidate_set.begin());
+        fflush(stdout);
+        return;
+    }
+    
+    if (cand_size == 2) {
+        vector<int> temp(candidate_set.begin(), candidate_set.end());
+        int a = temp[0], b = temp[1];
+        int res = ask(a, b);
+        if (res == 0 || res == 1) {
+            printf("! %d\n", a);
         } else {
-            vector<pair<int, int>> branch_sizes;
-            for (int i = 0; i < branches.size(); i++) {
-                branch_sizes.push_back({branch_nodes[i].size(), i});
-            }
-            sort(branch_sizes.rbegin(), branch_sizes.rend());
-            
-            int idx1 = branch_sizes[0].second;
-            int idx2 = branch_sizes.size() > 1 ? branch_sizes[1].second : idx1;
-            int branch1 = branches[idx1];
-            int branch2 = branches[idx2];
-            
-            int res = ask(branch1, branch2);
-            vector<int> new_candidates;
-            
-            if (res == 0) {
-                new_candidates = branch_nodes[idx1];
-            } else if (res == 2) {
-                new_candidates = branch_nodes[idx2];
-            } else {
-                new_candidates.push_back(centroid);
-                vector<bool> exclude_branches(MAXN, false);
-                for (int x : branch_nodes[idx1]) exclude_branches[x] = true;
-                for (int x : branch_nodes[idx2]) exclude_branches[x] = true;
-                
-                for (int node : candidates) {
-                    if (node != centroid && !exclude_branches[node]) {
-                        new_candidates.push_back(node);
-                    }
-                }
-            }
-            
-            for (int node : candidates) is_candidate[node] = false;
-            candidates = new_candidates;
-            for (int node : candidates) is_candidate[node] = true;
+            printf("! %d\n", b);
+        }
+        fflush(stdout);
+        return;
+    }
+    
+    int root = *candidate_set.begin();
+    int centroid = find_centroid(root);
+    
+    vector<int> branches;
+    for (int v : adj[centroid]) {
+        if (calc_subtree_size(v, centroid) > 0) {
+            branches.push_back(v);
         }
     }
     
-    printf("! %d\n", candidates[0]);
-    fflush(stdout);
+    if (branches.size() == 1) {
+        int res = ask(centroid, branches[0]);
+        unordered_set<int> new_candidates;
+        
+        if (res == 0) {
+            new_candidates.insert(centroid);
+            unordered_set<int> branch_set;
+            collect_branch_nodes_set(branches[0], centroid, branch_set);
+            for (int node : candidate_set) {
+                if (node != centroid && branch_set.count(node) == 0) {
+                    new_candidates.insert(node);
+                }
+            }
+        } else {
+            collect_branch_nodes_set(branches[0], centroid, new_candidates);
+        }
+        
+        candidate_set = move(new_candidates);
+        solve();
+    } else {
+        vector<pair<int, int>> branch_sizes;
+        for (int branch : branches) {
+            int size = calc_subtree_size(branch, centroid);
+            branch_sizes.push_back({size, branch});
+        }
+        
+        sort(branch_sizes.rbegin(), branch_sizes.rend());
+        
+        int branch1 = branch_sizes[0].second;
+        int branch2 = (branch_sizes.size() > 1) ? branch_sizes[1].second : -1;
+        
+        if (branch2 == -1) {
+            int res = ask(centroid, branch1);
+            unordered_set<int> new_candidates;
+            if (res == 0) {
+                new_candidates.insert(centroid);
+                unordered_set<int> branch_set;
+                collect_branch_nodes_set(branch1, centroid, branch_set);
+                for (int node : candidate_set) {
+                    if (node != centroid && branch_set.count(node) == 0) {
+                        new_candidates.insert(node);
+                    }
+                }
+            } else {
+                collect_branch_nodes_set(branch1, centroid, new_candidates);
+            }
+            candidate_set = move(new_candidates);
+            solve();
+            return;
+        }
+        
+        int res = ask(branch1, branch2);
+        unordered_set<int> new_candidates;
+        
+        if (res == 0) {
+            collect_branch_nodes_set(branch1, centroid, new_candidates);
+        } else if (res == 2) {
+            collect_branch_nodes_set(branch2, centroid, new_candidates);
+        } else {
+            new_candidates.insert(centroid);
+            unordered_set<int> branch1_set, branch2_set;
+            collect_branch_nodes_set(branch1, centroid, branch1_set);
+            collect_branch_nodes_set(branch2, centroid, branch2_set);
+            
+            for (int node : candidate_set) {
+                if (node != centroid && branch1_set.count(node) == 0 && branch2_set.count(node) == 0) {
+                    new_candidates.insert(node);
+                }
+            }
+        }
+        
+        candidate_set = move(new_candidates);
+        solve();
+    }
 }
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    
     int T;
     scanf("%d", &T);
     while (T--) {
         scanf("%d", &n);
         for (int i = 1; i <= n; i++) {
-            tree[i].left = tree[i].right = tree[i].parent = 0;
-        }
-        
-        for (int i = 1; i <= n; i++) {
             scanf("%d %d", &tree[i].left, &tree[i].right);
-            if (tree[i].left) tree[tree[i].left].parent = i;
-            if (tree[i].right) tree[tree[i].right].parent = i;
+            tree[i].parent = 0;
+            tree[tree[i].left].parent = i;
+            tree[tree[i].right].parent = i;
         }
         
         build_adj();
         
-        candidates.clear();
-        fill(is_candidate.begin(), is_candidate.end(), false);
+        candidate_set.clear();
         for (int i = 1; i <= n; i++) {
-            candidates.push_back(i);
-            is_candidate[i] = true;
+            candidate_set.insert(i);
         }
         
         solve();
