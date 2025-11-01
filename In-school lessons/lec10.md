@@ -54,7 +54,7 @@ How to select m?
 ![1761876774051](image/lec10/1761876774051.png)
 
 ### The Multiplication Method
-
+page 21
 
 
 ### Universal Hashing
