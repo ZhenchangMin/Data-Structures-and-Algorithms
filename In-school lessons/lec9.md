@@ -192,11 +192,18 @@ Recall the removal in BST:
 These are called structurally delete cases.
 
 - If z’s right child is an external node (**leaf**) , then z is the node to be deleted **structurally**: subtree rooted at z.left will replace z.
-- If z’s right child is an internal node, then let y be the  node in subtree rooted at z.right. Overwrite z’s info with y’s info, and y is the node to be deleted structurally: subtree rooted at y.right will replace y.
+- If z’s right child is an internal node, then let y be the node in subtree rooted at z.right. Overwrite z’s info with y’s info, and y is the node to be deleted structurally: subtree rooted at y.right will replace y.
+![1761979744796](image/lec9/1761979744796.png)
+In this case we wonna delete 13, just find y=15 and let 13 be 15, and delete 15, replace 15 with nil.
+Either way, **only one structural deletion** needed!
 
-powerpoint page 26
+To sum up:
+![1761979837464](image/lec9/1761979837464.png)
 
-
+For the repair step, it's crucial.
+Assume black x is left child of its parent after taking black y’s place, and we focus on fixing black-height property
+![1761980159861](image/lec9/1761980159861.png)
+4 cases in total.
 
 ## Skip Lists
 A special form of linked list.
@@ -204,10 +211,21 @@ Traditional linked list is not efficient at removing a node, because we need to 
 Can we skip some nodes to speed up the removal?
 ![1761275853758](image/lec9/1761275853758.png)
 We can represented it as two linked lists — one for **express stops** and one for **all stops**.
+![1761980419136](image/lec9/1761980419136.png)
+What if we have multiple layers of express ways?
+We can reduce number of elements by half at each level
 ![1761275995052](image/lec9/1761275995052.png)
 We can turn this into binary search.
 So search becomes more efficient, $O(\log n)$ time.
+![1761981058052](image/lec9/1761981058052.png)
+![1761981068129](image/lec9/1761981068129.png)
+How about insert and remove?
 
 ### The Real Skip List
 ![1761276365083](image/lec9/1761276365083.png)
-Not finished yet.
+Every time we insert we randomly decide which layer it belongs to.
+By flipping a coin, we decide the highest layer the inserted item in.
+![1761981201951](image/lec9/1761981201951.png)
+Additionally, insertion requires first searching the appropriate position to be inserted, so call search operation first.
+
+To remove, just search the item to be removed and remove in all layers, update pointers too.
