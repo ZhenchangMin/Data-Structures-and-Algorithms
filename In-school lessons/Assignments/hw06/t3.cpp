@@ -11,7 +11,6 @@ int main() {
     int n;
     cin >> n;
 
-    map<ll, ll> left; // l->r
     map<ll, ll> right; // r->l map是按照键自动排序的，所以left和right都是有序的
 
     while (n--) {
@@ -34,22 +33,23 @@ int main() {
                 // 1. 候选线段的右端点 >= l (由lower_bound保证)
                 // 2. 候选线段的左端点 <= r
                 // 如果候选线段的左端点 > r，说明它在新区间的右边，不相交，直接break
+                // 为什么可以直接break？后面的线段如果很长也和当前线段有交集怎么办？
+                // 不会的，因为我们现在维护的这个线段集合一定是没有互相相交的
+                // 如果当前的左端点已经大于了，后面的线段一定会更不相交，直接break就行
 
                 if (seg_l > r) break;
                 
                 // 执行删除操作：这个候选线段与新区间相交
                 removed++;
-                left.erase(seg_l); // 从left map中删除
                 it = right.erase(it);  // 从right map中删除，并获取下一个迭代器
             }
             // 添加这个线段
-            left[l] = r;
             right[r] = l;
 
             cout << removed << '\n';
         } 
         else if (op == 'B') {
-            cout << left.size() << '\n';
+            cout << right.size() << '\n';
         }
     }
 
