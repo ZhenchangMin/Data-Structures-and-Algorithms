@@ -54,8 +54,22 @@ How to select m?
 ![1761876774051](image/lec10/1761876774051.png)
 
 ### The Multiplication Method
-page 21
+Assume that any key length is at most $w$, that is its binomial number can be expressed within $w$ bits.
+Fix our hash table to have size $m=2^r$ in which $r\leq w$
+And we fix one constant $A$ satisfying $0<A<2^w$, that is, $A$ can be expressed within $w$ bits.
 
+Now we define our hash function to be
+$$
+h(k)=(Ak \text{ mod } 2^w) >> (w-r)
+$$
+
+As $A$ and $k$ are both $w$ digit numbers, their product get a $2w$ digit number, and then get mod to keep the lower $w$ digits, at last right shift $(w-r)$ digits to get the $r$ higher digits as the hash value.
+![1762757113423](image/lec10/1762757113423.png)
+
+This method is faster than division method, cuz bitshifting and multiplication are faster than division.
+
+However when one hash function is fixed, there definitely exist certain "bad inputs" that make different keys hash to the same value.
+This adversial input can result in poor performance for hash tables.
 
 ### Universal Hashing
 Once hash function is **fixed and known**, there must exist a set of “bad” keys that hash to the same value.
