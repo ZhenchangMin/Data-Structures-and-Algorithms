@@ -76,11 +76,27 @@ Once hash function is **fixed and known**, there must exist a set of “bad” k
 Such **adversarial input** will result in poor performance!
 
 Use randomization!
-Pick a **random** hash function $h$ when the hash table is first built.
-Universal Hash Family
-A collection of hash functions $\mathcal{H}$ 
+Pick a **random** hash function $h$ when the hash table is first built, and does not change it afterwards.
 
+**Universal Hash Family**
+A collection of hash functions $\mathcal{H}$ is universal if:
+For any $x\neq y$, at most $\frac{|\mathcal{H}|}{m}$ in $\mathcal{H}$ making $h(x)=h(y)$
+In which m is the size of the hash table, and $|\mathcal{H}|$ is the size of the hash family.
 
+Therefore, the probability of collision(that is $h(x)=h(y)$) is at most $\frac{1}{m}$
+
+Comparing the Simple Uniform Hashing and Universal Hashing:
+- Simple Uniform Hashing:Uncertainty due to randomness of **input**.
+- Universal Hashing: Uncertainty due to **choice of function**  (and potentially randomness of input).
+
+And then we can calculate the expected time for search/insert/remove operations under the assumption of universal hashing.
+#### Performance of Hashing with Chaining
+!Yet understood.
+![1763089559760](image/lec10/1763089559760.png)
+![1763089287032](image/lec10/1763089287032.png)
+![1763089625449](image/lec10/1763089625449.png)
+![1763089636776](image/lec10/1763089636776.png)
+![1763089646497](image/lec10/1763089646497.png)
 
 ## Open Addressing
 No linked lists, all items store in the table, one item per bucket.
