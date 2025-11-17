@@ -114,6 +114,11 @@ After remove 245, we can't find 321!
 Pseudacode are shown as above, and need to mention the remove operation is special.
 
 ### Linear Probing
+The hash function is defined as:
+$$
+h(k, i) = (h'(k) + i) \mod m
+$$
+Where $h'(k)$ is a auxiliary hash function, $i$ is the number of probing  and $m$ is the table size.
 
 
 ### Quadratic Probing
