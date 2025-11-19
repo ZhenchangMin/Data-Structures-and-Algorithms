@@ -114,14 +114,38 @@ After remove 245, we can't find 321!
 Pseudacode are shown as above, and need to mention the remove operation is special.
 
 ### Linear Probing
+The hash function takes in a key $k$ and the number of probes $i$ already made, and returns the index of the next slot to be probed(inserted).
+
 The hash function is defined as:
 $$
 h(k, i) = (h'(k) + i) \mod m
 $$
 Where $h'(k)$ is a auxiliary hash function, $i$ is the number of probing  and $m$ is the table size.
 
+A typical instance of $h'(k)$ is the division method: $h'(k) = k \mod m$
+For example if we set $m=10$, key $k=23$, then the probe sequence is:
+$$
+3, 4, 5, 6, 7, 8, 9, 0, 1, 2
+$$
+We first check index 3(i.e.$i=0$), if occupied, then check index 4(i.e.$i=1$, the first time of probing), and so on.
+
+Since the initial probe position determines the entire probe sequence, only $m$ distinct probe sequences are used with linear probing
+
+And linear probing could lead to another problem: **(Primary) Clustering**
+![1763561540747](image/lec10/1763561540747.png)
+Empty slot after a “cluster” has higher chance to be chosen, and cluster grows larger and larger, leading to a higher search time.
 
 ### Quadratic Probing
-
+![1763564760033](image/lec10/1763564760033.png)
 
 ### Double Hashing
+Use 2 independent auxiliary hash functions $h_1(k)$ and $h_2(k)$
+$$
+h(k, i) = (h_1(k) + i \cdot h_2(k)) \mod m
+$$
+Different from linear and quadratic probing, the second hash function $h_2(k)$ decides the step size of each probe.
+![1763565049763](image/lec10/1763565049763.png)
+The step size varies instead of being fixed in linear and quadratic probing.
+
+## Chaining vs Open Addressing
+![1763565142528](image/lec10/1763565142528.png)
