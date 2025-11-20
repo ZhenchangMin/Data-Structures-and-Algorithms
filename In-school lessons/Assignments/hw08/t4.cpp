@@ -1,51 +1,90 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
+
+int getMinUnvisitedNeighbor(int u, const vector<vector<int>> &adj, const vector<bool> &discovered, int n) {
+    int ans = n + 1;
+    for (int x : adj[u]) {
+        if (!discovered[x] && x < ans) {
+            ans = x;
+        }
+    }
+    return ans;
+}
+
+void removeDuplicates(vector<int>& v) {
+    sort(v.begin(), v.end());
+    v.erase(unique(v.begin(), v.end()), v.end());
+}
+
+void readGraph(int m, vector<vector<int>>& adj) {
+    for (int i = 0; i < m; i++) {
+        int a, b;
+        cin >> a >> b;
+        if (a != b) {
+            adj[a].push_back(b);
+            adj[b].push_back(a);
+        }
+    }
+}
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-
     int T;
     cin >> T;
-
     while (T--) {
         int n, m;
         cin >> n >> m;
-        vector<unordered_set<int>> adj(n + 1);
 
-        for (int i = 0; i < m; i++) {
-            int u, v;
-            cin >> u >> v;
-            if (u == v) continue;
-            adj[u].insert(v);
-            adj[v].insert(u);
-        }
-
-        long long ans = 0;
+        vector<vector<int>> adj(n + 1);
+        vector<bool> discovered(n + 1, false);
         vector<int> stk;
-        vector<char> seen(n + 1, 0);
+        int crt = 1;
+        int ans = 0;
+
+        readGraph(m, adj);
+        // input over
+
+        for (int i = 1; i <= n; i++) removeDuplicates(adj[i]);
 
         stk.push_back(1);
-        seen[1] = 1;
+        discovered[1] = true;
+        crt++;
 
-        for (int t = 2; t <= n; ++t) {
-            if (seen[t]) continue;
-            while (!stk.empty() && adj[stk.back()].find(t) == adj[stk.back()].end()) {
-                stk.pop_back();
-            }
+        while (crt <= n) {
             if (stk.empty()) {
                 ans++;
-                adj[1].insert(t);
-                adj[t].insert(1);
-                stk.push_back(1);
+                discovered[crt] = true;
+                stk.push_back(crt);
+                crt++;
+            }else{
+                int u = stk.back();
+                int minNeighbor = getMinUnvisitedNeighbor(u, adj, discovered, n);
+
+                if (minNeighbor == n + 1) {
+                    stk.pop_back();
+                    continue;
+                } else {
+                    if (minNeighbor > crt) {
+                        ans++;
+                        discovered[crt] = true;
+                        stk.push_back(crt);
+                        crt++;
+                    } else if (minNeighbor == crt) {
+                        discovered[crt] = true;
+                        stk.push_back(crt);
+                        crt++;
+                    } else if (minNeighbor < crt) {
+                        int it = find(adj[u].begin(), adj[u].end(), minNeighbor) - adj[u].begin();
+                        if (it != adj[u].size()) {
+                            adj[u].erase(adj[u].begin() + it);
+                        }
+                    }
+                }
             }
-
-            stk.push_back(t);
-            seen[t] = 1;
         }
-
         cout << ans << '\n';
     }
-
     return 0;
 }
