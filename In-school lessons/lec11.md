@@ -69,3 +69,38 @@ Strategy: account always non-negative via **induction** on $k$.
 By induction, we know this amortized cost is valid.
 
 #### Example: Binary Counter
+Use binary array $A$ with length $n$ to represent a non-negative integer.
+The number is 0 initially and Inc(A) increments the number by 1.
+```pseudocode
+Inc(A):
+i := 0
+while i < n and A[i] = 1 
+    A[i] := 0
+    i := i + 1
+if  i < n
+    A[i] := 1
+```
+Cost of In Inc: number of bits it **flipped**
+Average cost of $k$ Inc operations?
+Using accounting method:
+By observation we know that in each Inc operation, at most one bit changes from 0 to 1, while could have multiple bits changing from 1 to 0.
+So we set the amortized cost of each Inc operation to 2:
+- 1 for flipping 0 to 1
+- 1 saved in the bank for flipping 1 to 0 later(in further operation this digit might flip)
+
+And in this way we set the amortized cost as 2, and by induction we can prove the cost is valid.
+
+### The Potential Method
+Now we consider the amortized cost in a higher level, not focusing on the specific value in one operation(accounting)
+
+Design a potential function $\Phi$ that maps data structure status to real numbers.
+$\Phi(D_0)$: initial potential of the data structure, usually set to 0.
+$\Phi(D_i)$: potential of the data structure after $i$th operation
+
+Define $\hat{c}_i=c_i+\Phi(D_i)-\Phi(D_{i-1})$
+For amortized cost to be valid, need $\Phi(D_k)\geq \Phi(D_0)$ for all $k$
+
+Potential is like the balance in account in Accounting Method.
+- Potential slowly accumulates during “cheap” operations (deposit).
+- Potential drops a lot after an “expensive” operation (withdraw).
+![1763606854757](image/lec11/1763606854757.png)
