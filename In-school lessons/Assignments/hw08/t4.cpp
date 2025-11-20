@@ -1,50 +1,51 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct DSU {
-    int n;
-    vector<int> p, sz;
-    DSU(int n=0){ init(n); }
-    void init(int N){
-        n = N;
-        p.resize(n+1);
-        sz.assign(n+1,1);
-        iota(p.begin(), p.end(), 0);
-    }
-    int find(int x){ return p[x]==x?x:p[x]=find(p[x]); }
-    bool unite(int a, int b){
-        a = find(a); b = find(b);
-        if(a==b) return false;
-        if(sz[a] < sz[b]) swap(a,b);
-        p[b] = a;
-        sz[a] += sz[b];
-        return true;
-    }
-};
-
-int main(){
+int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
+
     int T;
-    if(!(cin >> T)) return 0;
-    while(T--){
+    cin >> T;
+
+    while (T--) {
         int n, m;
         cin >> n >> m;
-        DSU dsu(n);
-        for(int i=0;i<m;i++){
-            int u,v;
+        vector<unordered_set<int>> adj(n + 1);
+
+        for (int i = 0; i < m; i++) {
+            int u, v;
             cin >> u >> v;
-            if(u==v) continue;
-            dsu.unite(u,v);
+            if (u == v) continue;
+            adj[u].insert(v);
+            adj[v].insert(u);
         }
+
         long long ans = 0;
-        for(int i=2;i<=n;i++){
-            if(dsu.find(i) != dsu.find(i-1)){
-                ans++;
-                dsu.unite(i, i-1);
+        vector<int> stk;
+        vector<char> seen(n + 1, 0);
+
+        stk.push_back(1);
+        seen[1] = 1;
+
+        for (int t = 2; t <= n; ++t) {
+            if (seen[t]) continue;
+            while (!stk.empty() && adj[stk.back()].find(t) == adj[stk.back()].end()) {
+                stk.pop_back();
             }
+            if (stk.empty()) {
+                ans++;
+                adj[1].insert(t);
+                adj[t].insert(1);
+                stk.push_back(1);
+            }
+
+            stk.push_back(t);
+            seen[t] = 1;
         }
+
         cout << ans << '\n';
     }
+
     return 0;
 }
