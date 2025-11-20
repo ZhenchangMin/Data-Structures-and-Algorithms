@@ -1,58 +1,47 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+struct DSU {
+    vector<int> p, sz;
+    DSU(int n) : p(n+1), sz(n+1,1) {
+        iota(p.begin(), p.end(), 0);
+    }
+    int find(int x) { return p[x] == x ? x : p[x] = find(p[x]); }
+    void unite(int x, int y) {
+        x = find(x), y = find(y);
+        if (x == y) return;
+        if (sz[x] < sz[y]) swap(x, y);
+        p[y] = x;
+        sz[x] += sz[y];
+    }
+};
+
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
     int T;
     cin >> T;
-
     while (T--) {
         int n, m;
         cin >> n >> m;
-        vector<unordered_set<int>> adj(n + 1);
-        
+        DSU dsu(n);
+
         for (int i = 0; i < m; i++) {
             int u, v;
             cin >> u >> v;
-            if (u == v) continue;
-            adj[u].insert(v);
-            adj[v].insert(u);
+            if (u != v) dsu.unite(u, v);
         }
 
         long long ans = 0;
-        vector<int> stk;
-        vector<char> seen(n + 1, 0);
-
-        stk.push_back(1);
-        seen[1] = 1;
-        for (int t = 2; t <= n; ++t) {
-            if (seen[t]) continue;
-
-            bool found = false;
-            while (true) {
-                int top = stk.back();
-                if (adj[top].find(t) != adj[top].end()) {
-                    found = true;
-                    break;
-                }
-                if (top == 1) break;
-                stk.pop_back();
-            }
-
-            if (!found) {
+        for (int i = 2; i <= n; i++) {
+            if (dsu.find(i) != dsu.find(i - 1)) {
                 ans++;
-                adj[stk.back()].insert(t);
-                adj[t].insert(stk.back());
+                dsu.unite(i, i - 1);
             }
-
-            stk.push_back(t);
-            seen[t] = 1;
         }
 
-        cout << ans << '\n';
+        cout << ans << "\n";
     }
-
     return 0;
 }
