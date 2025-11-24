@@ -44,14 +44,52 @@ Update `tail` of $S_x$ to point to the last element of $S_y$ and update all poin
 ![1763882819332](image/lec12/1763882819332.png)
 And so, the time complexity of this sequence of operations is $O(n^2)$ cuz Union is so expensive!
 
-To improve that, we use **Weighted-union heuristic** (or, union-by-size)
+To improve that, we use **Weighted-union heuristic** (or, **union-by-size**)
 Basic idea is that we always append the smaller set to the larger set.
 ![1763882927408](image/lec12/1763882927408.png)
-So that the time complexity of this sequence of operations drops to $O(n)$
+So that the time complexity of this sequence of operations drops to $O(n)$, cuz $x_i$ is always a single element formed set.
 
 How about the worst case?
 With any sequence of $n+1$ MakeSet operations, and $n$ Union operations, what is the worst-case time complexity of this sequence of operations?
-$O(n\log n)$
+$O(n\log n)$, $\log n$ for each Union operation.
 ![1763883314289](image/lec12/1763883314289.png)
 
 ### Rooted-tree implementation of DisjointSet
+Basic Idea: Use a rooted-tree to represent a set; the root of a tree is the “leader” of that set.
+Each node has a pointer pointing to its parent; parent of a “leader” is the leader itself.
+
+- MakeSet(x): Create a rooted-tree with only one node $x$. $O(1)$
+- Find(x): Follow parent pointer of $x$ back to the root. 
+- Union(x,y): Change the parent pointer of the root of $x$ to the root of $y$. 
+![1763913433614](image/lec12/1763913433614.png)
+
+#### Linked-list vs Rooted-tree Implementation
+MakeSet is fast in both cases.
+For Linked-list, Find is fast but Union is slow.
+For Rooted-tree, Find is slow but Union is fast.
+
+#### Rooted-tree implementation of DisjointSet
+![1763914099784](image/lec12/1763914099784.png)
+Recall the sequence of operations.
+With rooted-tree implementation, the time complexity of this sequence of operations is $O(n^2)$ cuz every Union costs $O(n)$ time, need to find the root of each element.
+In worst case of the sequence of operations, the longer tree always append to the single node tree, so the rooted tree would degenerate to a linked-list, and the time complexity is $O(n^2)$.
+
+Again we use **union-by-rank heuristic**; reduce worst-case cost of Union and Find to $O(\log n)$
+Each time a node’s depth increases, the tree size at least doubles. So size $n$ trees has height $O(lgn)$.
+
+1. Union by size.
+When Union 2 subtrees, append the smaller tree to the larger tree.
+
+2. Union by height.
+When Union 2 subtrees, append the shorter tree to the taller tree.
+![1763970808128](image/lec12/1763970808128.png)
+
+Another way to improve the performance of Union-Find is to use **path compression heuristic**.
+![1763970873143](image/lec12/1763970873143.png)
+![1763970932983](image/lec12/1763970932983.png)
+We change the parent pointer of each node on the path to point directly to the root.
+Find can now change **heights**! Maintaining heights becomes expensive, so we ignore the impact on “height” when doing path compression.
+Rank is no longer the actual height of the tree but an upper bound on the height.
+So Union by height becomes Union by rank.
+![1763971311696](image/lec12/1763971311696.png)
+With Union-by-rank and path compression, the time complexity of Find is $O(\alpha(n))$, where $\alpha(n)$ is the inverse Ackermann function.
