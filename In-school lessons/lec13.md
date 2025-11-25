@@ -50,3 +50,8 @@ We process $n$ nodes and $m$ edges and so the time complexity is $O(m+n)$.
 If the graph is not connected, we just need to run BFS for each connected component.
 
 ### Depth-First Search(DFS)
+![1764052464054](image/lec13/1764052464054.png)
+![1764052724341](image/lec13/1764052724341.png)
+![1764052742637](image/lec13/1764052742637.png)
+![1764052789567](image/lec13/1764052789567.png)
+Total runtime of DFS is $O(m+n)$.
