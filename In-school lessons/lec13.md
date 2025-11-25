@@ -26,3 +26,27 @@ Two basic strategies for graph traversal:
 Usually use adjacency list to represent graphs in BFS and DFS.
 
 ### Breadth-First Search(BFS)
+Basic idea: start at source node $s$, and visit other nodes reachable from $s$ layer by layer.
+![1763993977287](image/lec13/1763993977287.png)
+![1763993986825](image/lec13/1763993986825.png)
+
+#### Implementation of BFS
+Use a FIFO queue to store nodes to visit.
+Nodes have 3 status:
+- undiscovered(WHITE): not in queue yet
+- discovered but not visited(GRAY): in queue but not visited yet
+- visited(BLACK): ejected from queue and visited(all its neighbors)
+![1764051295715](image/lec13/1764051295715.png)
+c refers to color, d refers to distance, and p refers to parent.
+We keep the parent of each node to track the path from source node $s$ to any node $v$.
+![1764051429209](image/lec13/1764051429209.png)
+In this explanation of execution, we clearly see how the queue works, and the number of node refers to the distance from $s$(depth).
+
+#### Performance of BFS
+![1764051574424](image/lec13/1764051574424.png)
+For adjacency list, the time complexity is $O(m+n)$.
+We process $n$ nodes and $m$ edges and so the time complexity is $O(m+n)$.
+
+If the graph is not connected, we just need to run BFS for each connected component.
+
+### Depth-First Search(DFS)
