@@ -53,5 +53,37 @@ If the graph is not connected, we just need to run BFS for each connected compon
 ![1764052464054](image/lec13/1764052464054.png)
 ![1764052724341](image/lec13/1764052724341.png)
 ![1764052742637](image/lec13/1764052742637.png)
+If a node is black, means that we've already processed all its neighbors, and we can return back to its parent.
+We get a **DFS tree** by using DFS(G,v) for each unvisited vertex $v\in V$.
+And DFS on each connected component, we get a **DFS forest**.
 ![1764052789567](image/lec13/1764052789567.png)
+DFSAll(G) can be viewed as an entrance function, and it calls DFS(G,v) for each unvisited vertex $v\in V$.
+DFS(G,v) is the main function of DFS.
+It visits all nodes reachable from $v$ in DFS tree recursively.
+
+And then we can keep a global variable as a clock to track **active intervals** of nodes
+We track the time we discover each node $v.d$ and the time we finish processing all its neighbors $v.f$.
+The active interval of a node $v$ is $[v.d,v.f]$.
+
 Total runtime of DFS is $O(m+n)$.
+
+#### Classification of Edges in DFS
+DFS process classify edges of input graph into four types:
+- Tree Edge: edges in DFS tree.
+- Back Edge: an edge connecting a node to its ancestor in DFS tree.
+- Forward Edge: non-tree edges connecting a node to its descendant in DFS tree.
+- Cross Edge: other edges.
+![1764140246946](image/lec13/1764140246946.png)
+
+#### Properties of DFS
+##### Parenthesis Theorem
+Theorem: Active intervals of two nodes are either: (a) entirely disjoint; or (b) one is entirely contained within another.
+
+##### White-path Theorem
+Theorem In the DFS forest, $v$ is a descendant of $u$ iff when $u$ is discovered, there is a path in the graph from $u$ to $v$ containing only WHITE nodes.
+
+##### Classification of edges
+![1764144289175](image/lec13/1764144289175.png)
+
+##### Types of edges in undirected graphs
+In DFS of an undirected graph $G$, every edge of $G$ is either a **tree edge** or a **back edge.**
