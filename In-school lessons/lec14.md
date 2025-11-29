@@ -16,4 +16,8 @@ Can refer to t1 in assignment hw09 as an example of topological sort.
 Topological sort is **impossible** if the graph **contains a cycle**.
 A given graph may have multiple different valid topological orderings, and how to generate one?
 
-Lemma 1: 
+Lemma 1: Directed graph $G$ is acyclic iff a DFS of $G$ yields no back edges
+
+Lemma 2:  If we do a DFS in DAG $G$, then $u.f > v.f$ for every edge $(u,v) \in E(G)$
+f refers to the finish time of a node in DFS.
+
