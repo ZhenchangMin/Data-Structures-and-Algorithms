@@ -16,3 +16,4 @@ Can refer to t1 in assignment hw09 as an example of topological sort.
 Topological sort is **impossible** if the graph **contains a cycle**.
 A given graph may have multiple different valid topological orderings, and how to generate one?
 
+Lemma 1: 
