@@ -1,74 +1,70 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
 
-struct UnionFind {
+struct DSU {
     vector<int> parent;
-    UnionFind(int n) {
-        parent.resize(n);
-        for (int i = 0; i < n; ++i) parent[i] = i;
+    DSU(int n) : parent(n) {
+        iota(parent.begin(), parent.end(), 0);
     }
     int find(int x) {
-        if (parent[x] != x) parent[x] = find(parent[x]);
-        return parent[x];
+        return parent[x] == x ? x : parent[x] = find(parent[x]);
     }
     bool unite(int x, int y) {
-        x = find(x);
-        y = find(y);
+        x = find(x), y = find(y);
         if (x == y) return false;
         parent[y] = x;
         return true;
     }
 };
 
-__int128 lcm128(__int128 a, __int128 b) {
-    return a / gcd((long long)a, (long long)b) * b;
-}
-
-void print128(__int128 x) {
-    if (x == 0) { cout << 0; return; }
-    string s;
-    while (x) {
-        s.push_back('0' + x % 10);
-        x /= 10;
-    }
-    reverse(s.begin(), s.end());
-    cout << s;
-}
-
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-
-    long long l, r;
+    
+    ll l, r;
     cin >> l >> r;
-
     int n = r - l + 1;
+    
     if (n == 1) {
         cout << 0 << "\n";
         return 0;
     }
-
-    vector<tuple<__int128,int,int>> edges;
-    for (int i = 0; i < n-1; ++i) {
-        __int128 a = l + i;
-        __int128 b = l + i + 1;
-        edges.push_back({lcm128(a,b), i, i+1});
-    }
-
-    sort(edges.begin(), edges.end());
-    UnionFind uf(n);
-    __int128 ans = 0;
-    int cnt = 0;
-    for (auto &e : edges) {
-        __int128 w; int u,v;
-        tie(w,u,v) = e;
-        if (uf.unite(u,v)) {
-            ans += w;
-            cnt++;
-            if (cnt == n-1) break;
+    
+    vector<tuple<ll, int, int>> edges;
+    
+    for (ll d = 1; d <= r; d++) {
+        ll start = ((l + d - 1) / d) * d;
+        if (start > r) continue;
+        
+        ll u_val = start;
+        ll u_idx = start - l;
+        
+        for (ll multiple = start + d; multiple <= r; multiple += d) {
+            ll v_val = multiple;
+            ll v_idx = multiple - l;
+            edges.emplace_back(u_val * v_val / d, u_idx, v_idx);
         }
     }
-
-    print128(ans);
-    cout << "\n";
+    
+    for (ll x = l + 1; x <= r; x++) {
+        edges.emplace_back(l * x / __gcd(l, x), 0, x - l);
+    }
+    
+    sort(edges.begin(), edges.end());
+    
+    DSU dsu(n);
+    ll ans = 0;
+    int cnt = 0;
+    
+    for (auto &[w, u, v] : edges) {
+        if (dsu.unite(u, v)) {
+            ans += w;
+            cnt++;
+            if (cnt == n - 1) break;
+        }
+    }
+    
+    cout << ans << "\n";
+    return 0;
 }
