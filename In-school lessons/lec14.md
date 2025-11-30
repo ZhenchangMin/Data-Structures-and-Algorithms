@@ -59,8 +59,16 @@ The bottom can be seen as the component graph of the top graph.
 
 To compute SCC:
 A component graph is a DAG.Each DAG has at least one source and one sink.
-If we do one DFS starting from a node in a sink SCC, then we explore exactly nodes in that SCC and stop!
+If we do one DFS starting from a node in a **sink SCC**, then we explore exactly nodes in that SCC and stop!
 But 2 problems:
 1. How to identify a node that is in a sink SCC?
 2. What to do when the first SCC is done?
 
+1. To identify a node in a sink SCC, we don't need to directly find a sink SCC. Instead, we can find a source SCC in the **transpose graph** $G^R$ . A source SCC in $G^R$ corresponds to a sink SCC in $G$.
+![1764504142791](image/lec14/1764504142791.png)
+Reverse the direction of each edge in $G$ to get $G^R$.
+Do DFS in $G^R$, the node with maximum finish time is guaranteed to be in source SCC.
+
+2. After finishing the first SCC, we can repeat the same process on the remaining graph until all nodes are visited.
+![1764504275547](image/lec14/1764504275547.png)
+Tieme complexity is $O(n+m)$.
