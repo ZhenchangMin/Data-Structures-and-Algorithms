@@ -19,3 +19,5 @@ Case 4: Arbitrary weight
 ### Case 1: Unit weight
 How to solve SSSP in an unit weight graph?
 ‣ That is, a graph in which each edge is of weight $1$.
+"Traverse by layer" in an unweighted graph:
+Visit all distance $d$ nodes before visiting any distance $d+1$ nodes, just like BFS.
