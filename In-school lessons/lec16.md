@@ -81,3 +81,24 @@ $v.dist = min{v.dist, u.dist + w(u,v)}$
 
 In this way, For any $v.dist$, at any time,  $v.dist$ is either an overestimate, or correct.
 Assume $u$ is the last node on a shortest path from $s$ to $v$. If $u.dist$ is correct and we run  `Update(u, v)`, then $v.dist$ becomes correct.
+![1764666557569](image/lec16/1764666557569.png)
+So we simply apply `Update(u, v)` for all edges $k+1$ times so that we can find the shortest path with at most $k+1$ edges.
+![1764666626215](image/lec16/1764666626215.png)
+Any shortest path cannot contain a cycle, so $k+1$ cannot be larger than $n-1$.
+
+#### Bellman-Ford Algorithm
+Update all edges, and repeat above step for $n − 1$ times.
+The complexity is: $Θ(n(m+n))$
+![1764666794462](image/lec16/1764666794462.png)
+
+### Case 4: Arbitrary weight
+What if negative cycle exists?
+Any shortest path cannot contain a cycle no longer holds.
+It means that after $n-1$ repetitions of “Update all edges”, some node $v$ still has $v.dist > u.dist + w(u,v)$ for some $(u,v)$ in $E$.
+And Bellman-Ford algorithm can be used to detect negative cycle.
+![1764666939492](image/lec16/1764666939492.png)
+Add the blue part, so that we can detect negative cycle in original graph.
+
+Bellman-Ford still works, but we can be more efficient!
+**Core idea** of Bellman-Ford: perform a sequence of Update that includes every shortest path as a subsequence.
+Observation: in DAG, every path, thus every shortest path, is a subsequence in the topological order.
