@@ -21,3 +21,63 @@ How to solve SSSP in an unit weight graph?
 ‣ That is, a graph in which each edge is of weight $1$.
 "Traverse by layer" in an unweighted graph:
 Visit all distance $d$ nodes before visiting any distance $d+1$ nodes, just like BFS.
+
+### Case 2: Arbitrary positive weight
+Add dummy nodes on edges so graph becomes unit weight graph.
+Run BFS on the resulting graph.
+![1764651354879](image/lec16/1764651354879.png)
+But could be inefficient if weights are large.
+
+#### Alarm Clocks
+Thus we use clocks to bypass the dummy nodes.
+Imagine we have a clock $T_u$ for each node $u$ in $V$.
+$T_u$ is the time when node $u$ is first visited.
+And the clock of source node $s$ is $0$.
+
+If $T_u$ goes off, we traverse all edges $(u,v)$ and set $T_v = T_u + w(u,v)$ if $T_v$ is not set or $T_v > T_u + w(u,v)$.
+![1764654570599](image/lec16/1764654570599.png)
+We focus on the valid nodes and we're uninterested in the dummy nodes.
+Value of $T_u$ is an estimate of the distance of $s$ to $u$.
+At any time $T_u\geq dist(s,u)$, and equality holds if and only if $u$ is visited($T_u$ goes off).
+
+In the image above, we set $T_B$ to be 80 when $s$ goes off, and we update it to be 51 when $A$ goes off.
+
+How to implement the alarm clocks?
+
+#### Dijkstra's Algorithm
+Use priority queue to store nodes with their $T_u$ values.
+```cpp
+Dijkstra(s):
+    for u in V:
+        T[u] = INF // T is the clock for node u
+        P[u] = None // P is the parent array
+    T[s] = 0
+    Q = priority_queue((T[u], u) for u in V)
+    while Q is not empty:
+        (dist, u) = Q.extract_min()
+        if dist != T[u]:
+            continue
+        for (u, v) in E: // traverse all edges from u
+            if T[v] > T[u] + w(u, v):
+                T[v] = T[u] + w(u, v)
+                Q.decrease_key((T[v], v)) // update priority queue
+                P[v] = u
+```
+Efficiency of Dijkstra's Algorithm: $O((n+m)logn)$ when using binary heap.
+
+#### Derivation of Dijkstra's Algorithm
+What’s BFS doing: **expand outward** from $s$, **growing the region** to which distances and shortest paths are known.
+Growth should be orderly: nodes closest to $s$ should be included first.
+![1764656169732](image/lec16/1764656169732.png)
+![1764657996582](image/lec16/1764657996582.png)
+Shortest path from $s$ to any node $v$ must pass through nodes that are 
+closer than $v$($u$ in the case).
+
+### Case 3: Arbitrary weight without negative cycle
+Dijkstra's algorithm fails when negative edges exist!
+But how dist valus is maintained in Dijkstra's algorithm is still valid.
+When processing edge $(u, v)$, execute procedure `Update(u, v)`: 
+$v.dist = min{v.dist, u.dist + w(u,v)}$
+
+In this way, For any $v.dist$, at any time,  $v.dist$ is either an overestimate, or correct.
+Assume $u$ is the last node on a shortest path from $s$ to $v$. If $u.dist$ is correct and we run  `Update(u, v)`, then $v.dist$ becomes correct.
