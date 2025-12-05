@@ -6,5 +6,5 @@ Straightforward solution for APSP: For each $u\in V$, execute SSSP algorithm onc
 ![1764785215021](image/lec17/1764785215021.png)
 In this way, we solve arbitrary graphs with Bellman-Ford algorithm in $O(n^4)$ time.
 Can we do better?
-Intuition: modify edge weights **without** changing shortest path, so that Dijkstra’s algorithm can work.
+Intuition: modify edge weights **without** changing shortest path, so that Dijkstra's algorithm can work.
 ![1764929937241](image/lec17/1764929937241.png)
