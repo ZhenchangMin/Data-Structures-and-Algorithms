@@ -29,4 +29,21 @@ strategy usually works for it:
 - Greedy property.
 
 ### Optimal Substructure
-A problem exhibits optimal substructure if an optimal solution to the problem contains within it optimal solution(s) to subproblem(s): 
+A problem exhibits optimal substructure if an optimal solution to the problem contains within it optimal solution(s) to subproblem(s).
+
+### Greedy Property
+At each step when building a solution, make the choice that looks best for **the current problem**, without considering results from subproblems. That is, make **local greedy choice** at each step.
+
+## Fractional Knapsack Problem
+• A thief robbing a warehouse finds $n$ items A = {$a_1, a_2, ..., a_n$}.
+• Item $a_i$ is worth $v_i$ dollars and weighs $w_i$ pounds.
+• The thief can carry at most $W$ pounds in his knapsack.
+• The thief can carry fraction of items.
+• What should the thief take to maximize his profit?
+
+A greedy strategy for this problem is to choose the item with the highest profit-to-weight ratio first.
+i.e., choose item $a_i$ such that $\frac{v_i}{w_i}$ is maximum, until the knapsack is full.
+
+**What if the thief cannot take fractions of items?**
+The greedy solution is NOT optimal for the 0/1 Knapsack Problem!
+And the optimal solution can be found by **dynamic programming**(next lecture).
