@@ -2,56 +2,39 @@
 using namespace std;
 using ll = long long;
 
-static bool feasible(ll S, ll n, ll M) {
-	if (S == 0) return M == 0;
-	if (M == 0) return false;
-
-	int lowBitM = __builtin_ctzll(M);
-	int v2S = __builtin_ctzll(S);
-	if (lowBitM > v2S) return false;
-
-	ll rem = S;
-	for (int k = 62; k >= 0; --k) {
-		if ((M >> k) & 1LL) {
-			ll unit = 1LL << k;
-			ll can = min(n, rem / unit);
-			rem -= can * unit;
-			if (rem == 0) break;
-		}
-	}
-	return rem == 0;
-}
-
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
+
 	int T;
 	if (!(cin >> T)) return 0;
 	while (T--) {
-		ll n;
+		long long n;
 		cin >> n;
-		ll S = 0;
-		for (ll i = 0; i < n; ++i) {
-			ll a;
+		unsigned long long S = 0;
+		for (long long i = 0; i < n; ++i) {
+			unsigned long long a;
 			cin >> a;
 			S += a;
 		}
+
 		if (S == 0) {
 			cout << 0 << "\n";
 			continue;
 		}
-		ll lo = 0, hi = (1LL<<62) - 1; // 充足的上界
-		ll ans = -1;
-		while (lo <= hi) {
-			ll mid = (lo + hi) >> 1;
-			if (feasible(S, n, mid)) {
-				ans = mid;
-				hi = mid - 1;
-			} else {
-				lo = mid + 1;
+
+		unsigned long long rem = S;
+		unsigned long long M = 0;
+		for (int k = 62; k >= 0; --k) {
+			unsigned long long unit = 1ULL << k;
+			__int128 cap_lower = (__int128)n * (unit - 1ULL);
+			if ((__int128)rem > cap_lower) {
+				M |= unit;
+				unsigned long long can = (unsigned long long)min<unsigned long long>((unsigned long long)n, rem / unit);
+				rem -= can * unit;
 			}
 		}
-		cout << ans << "\n";
+		cout << (unsigned long long)M << "\n";
 	}
 	return 0;
 }
