@@ -18,7 +18,7 @@ int main() {
         adj[i].set(i); // to set the i-th bit of adj[i] to 1, that means i can reach i
         for (int j = 0; j < n; ++j) {
             if (i == j) continue;
-            uint32_t rand_num = rng();
+            long long rand_num = rng();
             if (rand_num % p == 0) {
                 adj[i].set(j); // to set the j-th bit of adj[i] to 1, that means i can reach j
             }
