@@ -22,13 +22,14 @@ int main() {
         return 0;
     }
 
-    // parent[u] 记录父节点；order 记录从根出发的遍历序，随后反向用于后序处理
+    // parent[u] 记录父节点；order 记录从根出发的DFS遍历序，随后反向用于后序处理
     vector<int> parent(n, -1), order;
     order.reserve(n);
 
     stack<int> st;
     st.push(0);
     parent[0] = -2; // 根的父亲打特殊标记，避免回到父边
+    // 用栈模拟 DFS，生成 parent 数组和 order 序列
     while (!st.empty()) {
         int u = st.top();
         st.pop();
@@ -41,6 +42,8 @@ int main() {
     }
 
     vector<long long> sz(n, 0), dp(n, 0), ans(n, 0);
+    // sz[u] 记录以 u 为根的子树节点数
+    // dp[u] 记录以 u 为根的u到子树中节点的距离和
 
     // 第一次：按 order 的逆序（等价后序）自底向上汇总子树规模与距离和
     for (int i = (int)order.size() - 1; i >= 0; --i) {
@@ -49,7 +52,7 @@ int main() {
         for (int v : g[u]) {
             if (v == parent[u]) continue;
             sz[u] += sz[v];
-            dp[u] += dp[v] + sz[v];
+            dp[u] += dp[v] + sz[v]; // 重要的公式！可以推导出来
         }
     }
 
@@ -62,7 +65,7 @@ int main() {
         st.pop();
         for (int v : g[u]) {
             if (v == parent[u]) continue;
-            ans[v] = ans[u] + (long long)n - 2LL * sz[v];
+            ans[v] = ans[u] + (long long)n - 2 * sz[v];
             st.push(v);
         }
     }
