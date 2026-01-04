@@ -6,3 +6,4 @@ A **minimum spanning tree** is a spanning tree with total weight less than or eq
 
 ## Computing MST
 Firstly, we consider a generic method:
+- Start with 
