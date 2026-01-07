@@ -68,7 +68,7 @@ So Arraylist is fast for Stack, slow for FIFO Queue.
 
 #### Using Circular Array to Implement Deque - ArrayDeque
 
-Another way to implement Deque: Use two pointers, to form a circular array. When we removeFirst, head pointer gets from 1 to 2. When addLast, tail pointer gets to the end, and if there is space at front, use mod operation to get tail at the front.
+Another way to implement Deque: Use two pointers, to form a circular array. When we `removeFirst`, head pointer gets from 1 to 2. When `addLast`, tail pointer gets to the end, and if there is space at front, use mod operation to get tail at the front.
 ![ArrayDeque](image/lec3/1.png)
 ArrayDeque is not good enough for a list, especially in the middle.
 
