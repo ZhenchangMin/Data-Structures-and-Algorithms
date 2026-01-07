@@ -134,12 +134,12 @@ Then number of swaps equals to $\sum_{i<j} pr(i < j | a[i] > a[j]) = \frac{n^{2}
 
 #### Space Complexity
 
-We only need three additional memory cells to store the variable key, i, and j.
+We only need three additional memory cells to store the variable `key`, `i`, and `j`.
 So space complexity is $O(1)$.
 
 ## Asymptotic Order of Growth
 
-In practice, we usually don’t care about the unimportant details in the counted operations.
+In practice, we usually don't care about the unimportant details in the counted operations.
 `order of growth` is what really interests us, a higher-level abstraction.
 
 ### Big $\Omicron$ Notation
