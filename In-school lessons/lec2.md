@@ -34,9 +34,9 @@ Specification:
 
 ![1757036212026](image/lec2/1757036212026.png)
 ### Total correctness
-An algorithm is called totally correct for the given specification if and only if for any correct input data it:
+An algorithm is called totally correct for the given specification if and only if for any correct input data it either:
 1. halts.
-2. returns the desired output.
+2. or returns the desired output.
 
 Usually, while checking the correctness of an algorithm it is easier to separately:
 - Check whether the algorithm stops
