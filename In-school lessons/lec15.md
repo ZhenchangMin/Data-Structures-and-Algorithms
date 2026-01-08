@@ -34,3 +34,16 @@ So we can see, the time complexity of Kruskal's algorithm is dominated by the so
 ## Prim's Algorithm
 Strategy for finding safe edge in Prim’s algorithm: Keep finding MWOE in one fixed CC in $G_A$.
 ![1767796780357](image/lec15/1767796780357.png)
+How to find MWOE efficiently?
+Use a priority queue to maintain each remaining node's distance to the CC right now.
+![1767796780357](image/lec15/截图%202026-01-08%2011-05-06.png)
+Now we can infer the time complexity of Prim's algorithm is $O(m \log n)$, as each edge may cause at most one decrease-key operation, and each node will cause one extract-min operation.
+
+## Borůvka's Algorithm
+- Start with each node as a separate component.
+- Find the MWOE for each component, and add all those edges to $A$.
+- Repeat until there is only one component.
+Thus it is able to add multiple edges to $A$ in each iteration.
+![1767801867552](image/lec15/截图%202026-01-08%2011-11-24.png)
+The number of components in G′ can drop by significantly more than a factor of 2 in a single iteration, reducing the number of iterations below the worst-case O(lg n).
+Using DSU to maintain the connected components, we can infer the time complexity of Borůvka's algorithm is also $O(m \log n)$.
