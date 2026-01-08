@@ -1,9 +1,12 @@
 # Lec5: Heaps
+
 ## Binary Heap
+
 A binary heap is a complete binary tree, in which each node representing an item.
 A **complete** binary tree's level is completely filled, except possibly the last, and all nodes in the last level are as far left as possible.
 
-Values in the nodes satisfy heap-property:
+Values of the nodes satisfy heap-property:
+
 - Max-heap: for each node except root, value of that node $\leq$ value of its parent.
 - Min-heap: for each node except root, value of that node $\geq$ value of its parent.
 
@@ -14,12 +17,15 @@ It's very convenient to use indeces to obtain parents and children.
 While this is only for complete binary trees, if a normal tree it's obviously not working.
 
 ### Common Operations of Binary Max-heap
+
 3 most common ones:
+
 - HeapInsert: insert an element into the heap
 - HeapGetMax: return the item with maximum value
 - HeapExtractMax: remove the item with maximum value and return it
 
 #### HeapInsert
+
 When we insert one item, it must retain being a binary heap.
 Firstly, it must be a complete binary tree, so we put the item at the end of the array first.
 Now, it might not follow heap properties.
@@ -33,6 +39,7 @@ So we keep comparing the parent and the newcoming item, swap them if not followi
 Time complexity is $O(lgn)$ as we swap **height** of times in worst case, and the height of tree is $lgn$.
 
 #### HeapExtractMax
+
 When we remove the maximum item from the heap, how to retain being a binary heap?
 Easily we know the root must be the maximum(heap properties).
 
@@ -45,7 +52,9 @@ And we repeat these actions until the item is no smaller than its children or it
 ![binaryheap](image/lec5/7.png)
 
 ### Application of Heaps: Priority Queue
+
 Use binary hep to implement priority queue:
+
 - Add(item): HeapInster(item)
 - Remove(): HeapExtractMax()
 - UpdatePriority(item, val)
@@ -53,15 +62,16 @@ Use binary hep to implement priority queue:
 All these operations finish within $O(lgn)$ time
 
 ### Application II: HeapSort
+
 It is very simple to getMax in heap and rather simple to remove it.
 Input a random array, generate one MaxHeap using the array, and we do HeapExtractMax many times and keep a copy of it, getting a sorted array.
 
 Time complexity: $O(nlgn)$
 
-How to BuildMaxHeap using an array?
-- Start with empty, call HeapInsert n times?
-Obviously this is okay, but it costs much time($O(nlgn)$).
+How to Build MaxHeap using an array?
 
+- Start with empty, call HeapInsert n times?
+  Obviously this is okay, but it costs much time($O(nlgn)$).
 - Use a dividing approach: keep merging smaller heaps into larger ones, until one single heap remains.
-After every merging, check if all parents are bigger than children, and swap if not.
-In this case, time complexity would be $O(n)$
+  After every merging, check if all parents are bigger than children, and swap if not.
+  In this case, time complexity would be $O(n)$
