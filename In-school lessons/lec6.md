@@ -121,12 +121,12 @@ Assume that all permutations share an equal probability, to make analysis simple
 
 When we wanna know the average time cost, we assume the `Partition Process` produces a **mix of good and bad** splits.
 Further, for the sake of intuition, suppose that the good and bad splits **alternate** levels in the tree, and that the good splits are **best** case splits and the bad splits are **worst** case splits.
-The cost of “bad” Partition can be **absorbed** by recent “good” Partition
+The cost of  "bad" Partition can be **absorbed** by recent  "good"  Partition
 In this way, the time is still $O(nlogn)$, illustrating the average time cost.
 
 Strictly prove it:
 Choose pivot (uniformly) **at random!**
-Since the choice is randomly made, there is a good chance(**constant probability**) that we choose a “good” pivot.
+Since the choice is randomly made, there is a good chance(**constant probability**) that we choose a "good" pivot.
 We can swap the chosen pivot with the last element so we needn't change any code of our `Partition Process`.
 ![algorithms](image/lec6/15.png)
 
@@ -135,7 +135,7 @@ We can swap the chosen pivot with the last element so we needn't change any code
 Now that any deterministic choice of pivot, there could be one particular "bad" input for it.
 So we can choose pivots uniformly at random.
 
-Since the choice is randomly made, there is **a good chance**(constant probability) that we choose a “good” pivot.
+Since the choice is randomly made, there is **a good chance**(constant probability) that we choose a "good" pivot.
 
 ![algorithms](image/lec6/16.png)
 Most time spent on the InplacePartition function.
@@ -161,7 +161,7 @@ So the time complexity of qsort is nlgn, and has a high probability that it rema
 
 If there're many duplicates?
 Maintain 4 regions: $<pivot, =pivot, in process, >pivot$
-End up with three regions (“<”, “=”, and “>”), and only recurse into two ofthem (“<” and “>”): the more the duplicates, the less to recurse, and thebetter the algorithm!
+End up with three regions (“<”, “=”, and “>”), and only recurse into two ofthem (“<” and “>”): the more the duplicates, the less to recurse, and the better the algorithm!
 
 Stop recursion if it is small enough to solve.
 Usually use InsertionSort when is about 10 elements left.
@@ -175,7 +175,7 @@ QuickSort, MergeSort and HeapSort are all nlgn. Which is better?
 
 - QuickSort is faster in most cases. Although it needs more comparison than MergeSort, it has much less **movement**(copies) of array elements.
 - HeapSort is the slowest among them, with poor locality of reference, but needs less amount of space.
-- MergeSort scanning the 2 arrays would take advantage in  handling slow-to-access sequential media, and partially pre-sorted input would be alot faster.
+- MergeSort scanning the 2 arrays would take advantage in handling slow-to-access sequential media, and partially pre-sorted input would be alot faster.
 
 ## External Sorting(*not requested)
 
@@ -245,7 +245,7 @@ Every time the algorithm asks what the $i$th is, the adversary answers 0, so the
 If he answers 1, the algorithm terminates, which is not what he wants.
 
 One absolutely crucial feature of this argument is that the adversary makes absolutely **no assumptions** about the algorithm.
-The adversary strategy can’t depend on some predetermined order of examining bits, and it doesn’t care about anything the algorithm might or might not do when it’s not looking at bits.
+The adversary strategy can't depend on some predetermined order of examining bits, and it doesn't care about anything the algorithm might or might not do when it's not looking at bits.
 
 However, as long as there are at least two different answers to the problem by the algorithm that are consistent with all answers given by the adversary, the algorithm cannot be done!(2 different outputs)
 
@@ -284,7 +284,7 @@ Therefore $2^c\geq n!$, and c is $lgn$
 
 ![algorithms](image/lec6/34.png)
 ![algorithms](image/lec6/35.png)
-Every node has 2 children(except leaves), because it only answers ye or no for every comparison query.
+Every node has 2 children(except leaves), because it only answers yes or no for every comparison query.
 And so the tree must have n! leaves, so the height must be $\geq lg(n!)$, meaning $\geq nlgn$, and the height is the number of comparisons.
 
 ### Information Content(*not requested)
