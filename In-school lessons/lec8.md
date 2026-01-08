@@ -1,6 +1,9 @@
 # Lec8: Tree
+
 ## Tree
+
 A **tree** is a connected, acyclic undirected graph.
+
 - connected: there's a path between any two vertices.
 - acyclic: there's no cycle.
 - undirected: the edges have no direction.
@@ -8,6 +11,7 @@ A **tree** is a connected, acyclic undirected graph.
 In CS, we focus on **rooted** trees.
 
 Recursive definition:
+
 - A tree is empty, or
 - A tree has a root node with zero or a list of non-empty subtrees.
 
@@ -35,7 +39,9 @@ class Node{
     Node right
 }
 ```
+
 Or if a lot of children, we can use a list to store them.
+
 ```
 class Node{
     Data data
@@ -46,22 +52,28 @@ class Node{
 ```
 
 ## Traversal of a Tree
+
 We want to visit every node in the tree.
 There are three ways to traverse a tree:
+
 - Preorder: visit the **root first**, then traverse the **left** subtree, and finally traverse the **right** subtree.
 - Inorder: traverse the **left** subtree first, then visit the **root**, and finally traverse the **right** subtree.
 - Postorder: traverse the **left** subtree first, then traverse the **right** subtree, and finally visit the **root**.
 
 ### Preorder Traversal
+
 ![1760668159318](image/lec8/1760668159318.png)
 
 ### Inorder Traversal
+
 ![1760668205978](image/lec8/1760668205978.png)
 
 ### Postorder Traversal
+
 ![1760668214841](image/lec8/1760668214841.png)
 
 ## Complexity of Tree Traversal
+
 - Preorder, Inorder, Postorder: $O(n)$, where $n$ is the number of nodes in the tree.
 - Space complexity: recursion needs to push into stack, and in worst case we need to push all n calls of function into stack, so $O(n)$
 
@@ -72,6 +84,7 @@ Postorder Traversal can be used for parsing expressions.
 Expressions are parsed into a tree, and postorder traversal can be used to evaluate the expression.
 
 ## Iterative Tree Traversal
+
 ![1760668922663](image/lec8/1760668922663.png)
 This is using stack and iteration to simulate the preorder traversal.
 First we don't visit the root, we push it into stack.
@@ -80,6 +93,7 @@ And then we push all its children, and then visit root.
 For InorderTraversal, mind the order of pushing frames.
 
 ## Level-order Traversal
+
 A special kind of traversal is **breadth-first traversal**.
 Previous traversals are all depth-first traversals.
 

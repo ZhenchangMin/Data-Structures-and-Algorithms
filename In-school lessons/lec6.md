@@ -1,15 +1,20 @@
 # Lec6: Sorting
+
 ## Sorting Problem
+
 Sort $n$ numbers into ascending order.
 As long as the type of data is comparable, it can be viewed as a sorting problem.
 
 Characteristics of sorting algorithms:
+
 - In-place: if $O(1)$ extra space is needed
 - Stability: if numbers with the same value appear in the output array **in the same order** as they do in the input array
-![algorithms](image/lec6/1.png)
+  ![algorithms](image/lec6/1.png)
 
 ## The Selection Sort Algorithm
+
 Pick out minimum value of the input, recursively sort remaining elements, and swap the place with minimum of remaining array.
+
 ```cpp
 void selection_sort(int[] a){
     for (int i = 0; i < a.length(); i++){
@@ -23,20 +28,20 @@ void selection_sort(int[] a){
 }
 ```
 
-
-
 Time complexity: $O(n)+O(n-1)+\dots+O(1)=O(n^2)$
 
 If we switch the selection sort into picking max putting at last, it would be heapsort.
 Therefore, now the two algorithms are basically the same, only difference lies in data structure, so heap can largely make the sort faster.
 
 ## The Bubble Sort Algorithm
+
 Repeatedly step through the array, compare 2 adjacent pairs and swap them if they're in wrong order.
 
 Time complexity is $O(n^2)$
 ![algorithms](image/lec6/2.png)
 
 ### Improve Bubble Sort
+
 What if in one iteration, no swap take place?
 That means there're no wrong pairs, the array is sorted and we are done!
 ![algorithms](image/lec6/3.png)
@@ -50,21 +55,28 @@ Items after the **last swap** are all in correct sorted position, cuz if it does
 ![algorithms](image/lec6/5.png)
 
 ## Insertion Sort
+
 ![algorithms](image/lec6/6.png)
 If one element needs to go far, there would be numerous swaps.
 Swaps would be bad for computer, so we try to reduce swaps.
 Shell Sort(not important)
 
 ## Quick Sort
+
 A unified view of many sorting algorithms:
 **Divide** problem into subproblems. **Conquer** subproblems recursively. **Combine** solutions of subproblems.
+
 1. Divide the input into size 1 and size n-1:
+
 - InsertionSort
 - SelectionSort
+
 2. Divide the input into two parts of same size:
+
 - MergeSort
+
 3. Divide the input into **approximately** same size:
-QuickSort
+   QuickSort
 
 Basic idea of QuickSort:
 Choose one item $x$ in the given array $A$ as **pivot**.
@@ -72,11 +84,13 @@ Use the pivot to **partition**(divide) the input into $B$ and $C$, so that items
 Then recursively sort $B$ and $C$, and output $<B, x, C>$ stick them together, getting the sorted array.
 
 ### Choosing the Pivot
-Ideally the pivot should partition the input into two parts of **roughly the same size** (we’ll see why later).
+
+Ideally the pivot should partition the input into two parts of **roughly the same size** (we'll see why later).
 But for every simple deterministic method of choosing pivot, we can construct corresponding bad input to make sort very slow.
-For now we choose the very last number as pivot.
+For now we choose the **very last number** as pivot.
 
 ### The Partition Process
+
 ![algorithms](image/lec6/7.png)
 This costs much space, and unstable.
 Can we turn space complexity into $O(1)$?
@@ -84,6 +98,7 @@ Can we turn space complexity into $O(1)$?
 From p to i, the elements are $\leq x$, and from i+1 to j, they are $>x$, and from j to r, yet to be compared.
 
 ### Time Complexity of QuickSort
+
 ![algorithms](image/lec6/9.png)
 The hardest part of anylyzing time of quick sort is to know how many recursions we have to do.
 ![algorithms](image/lec6/10.png)
@@ -116,6 +131,7 @@ We can swap the chosen pivot with the last element so we needn't change any code
 ![algorithms](image/lec6/15.png)
 
 ### Randomnized Quicksort
+
 Now that any deterministic choice of pivot, there could be one particular "bad" input for it.
 So we can choose pivots uniformly at random.
 
@@ -142,6 +158,7 @@ This is a harmonic series, and we try to get the result.
 So the time complexity of qsort is nlgn, and has a high probability that it remains nlgn.
 
 ### A bit more about qsort
+
 If there're many duplicates?
 Maintain 4 regions: $<pivot, =pivot, in process, >pivot$
 End up with three regions (“<”, “=”, and “>”), and only recurse into two ofthem (“<” and “>”): the more the duplicates, the less to recurse, and thebetter the algorithm!
@@ -153,17 +170,21 @@ If we choose multiple pivot?
 ![algorithms](image/lec6/22.png)
 
 ## The $nlgn$ Sorting Algorithms
+
 QuickSort, MergeSort and HeapSort are all nlgn. Which is better?
+
 - QuickSort is faster in most cases. Although it needs more comparison than MergeSort, it has much less **movement**(copies) of array elements.
 - HeapSort is the slowest among them, with poor locality of reference, but needs less amount of space.
 - MergeSort scanning the 2 arrays would take advantage in  handling slow-to-access sequential media, and partially pre-sorted input would be alot faster.
 
 ## External Sorting(*not requested)
+
 External sorting is required when the data must reside in the slow external memory, usually a disk drive.
 There is one I/O between disk and memory, and I/O is very expensive at time.
 If we wonna sort big files we might want this algorithm.
 
 ### Key Idea
+
 ![algorithms](image/lec6/23.png)
 ![algorithms](image/lec6/24.png)
 Look at this example.
@@ -179,10 +200,12 @@ If we have B lists, we need B+1 buffer pages in memory, and the I/O cost is the 
 If we only have 3 buffer pages for B lists, just merge 2 lists at one time and recursively merge their results.
 
 ## About Sorting Itself
+
 Can we have an algorithm smaller than $O(nlgn)$?
 This can be called **computational complexity theory**.
 
 ### Upper bond and Lower bond
+
 Upper bound: how **fast** can we solve the problem?
 Lower bound: how **slow** solving the problem has to be?
 
@@ -194,6 +217,7 @@ When upper and lower bound meet, we get a specific value, and meaning we got the
 Therefore, we want larger lower bounds.
 
 #### Trivial Lower Bounds
+
 Lower Bound based on Output Size
 Any algorithm that for inputs of size $n$ has a worst-case output size of $f(n)$ needs to have a runtime of $Θ(f(n))$.
 The larger the lower bound, the more useful it is.
@@ -201,6 +225,7 @@ The larger the lower bound, the more useful it is.
 How to get a tighter lower bound?
 
 ### Adversary Argument
+
 Assume there is an adversary, for every algorithm solving P, he designs the worst input for the algorithm, and it must solve it.
 He must be informed of the **Key Operation** of the algorithm.
 
@@ -225,6 +250,7 @@ The adversary strategy can’t depend on some predetermined order of examining b
 However, as long as there are at least two different answers to the problem by the algorithm that are consistent with all answers given by the adversary, the algorithm cannot be done!(2 different outputs)
 
 ### Adversary Argument for Comparison-based Sorting
+
 ![algorithms](image/lec6/30.png)
 ![algorithms](image/lec6/31.png)
 We set up the adversary, there're $n!$ permutations at first.
@@ -240,10 +266,13 @@ In this way we get the lower bond of comparison-based sort.
 Therefore, sorting cannot be faster than $O(nlgn)$
 
 ### Information-Theoretic Argument
+
 Consider the minimum number M of distinct outputs that a sorting algorithm must be able to produce to be able to sort any possible input of length n.
+
 $$
 M = n!
 $$
+
 The algorithm must be capable of outputting at least M different permutations, or there would exist some input that it was not capable of sorting.
 
 Remember, the algorithm is deterministic and its behavior is determined entirely by the results of the **comparisons**.
@@ -252,16 +281,20 @@ If we make c comparisons already, at most it produces $2^c$ different possible p
 Therefore $2^c\geq n!$, and c is $lgn$
 
 ### An Alternative View: Decision Trees
+
 ![algorithms](image/lec6/34.png)
 ![algorithms](image/lec6/35.png)
 Every node has 2 children(except leaves), because it only answers ye or no for every comparison query.
 And so the tree must have n! leaves, so the height must be $\geq lg(n!)$, meaning $\geq nlgn$, and the height is the number of comparisons.
 
 ### Information Content(*not requested)
+
 Information content, or Self-information or Shannon information of an event x:
+
 $$
 I(x)=-logPr(x)=log\frac{1}{Pr(x)}
 $$
+
 If a highly likely event occurs, it carries very little information. In fact, a 100% likely event occurs, it has no information.
 On the other hand, if a highly unlikely event occurs, it is much more informative.
 
@@ -270,18 +303,24 @@ For 2 mutual independent events x and y, we want the information of event xy to 
 So using log would give us the ability to sum.
 
 #### Information Entropy
+
 Given a discrete random variable $X$, which takes values in the alphabet $\mathcal{X}$ and is distributed as $Pr: \mathcal{X}\rightarrow [0,1]$
 The **entropy** $H(X)$ of a random variable X is the average level of "information", "surprise", or "uncertainty" inherent to the variable's possible outcomes.
+
 $$
 H(X)=\sum_{x\in\mathcal{X}}-Pr(X=x)logPr(X=x)=E[-logPr(X)]
 $$
+
 ![algorithms](image/lec6/36.png)
 
 #### Information-theoretic Lower Bound
+
 ![algorithms](image/lec6/37.png)
 
 ## Non-comparison-based Sorting
+
 ### Bucket Sort
+
 Assume we already know each item is from the set [10], it is very easy to beat $O(nlogn)$
 Create 10 empty lists(buckets), scan through input and for each item append them to the end of the corresponding bucket.
 Then merge all the buckets and output the results.
@@ -300,6 +339,7 @@ And the time complexity is $O(n+k+(\frac{n^2}{k}))$, which is $O(n)$ when k is r
 If the array is not so uniform, the algorithm can turn into a $O(n^2)$ one.
 
 ### Radix Sort
+
 Assume we want to sort $n$ decimal integers each of $d$-digits.
 ![algorithms](image/lec6/40.png)
 The stable sort must satisfy that if a higher digit, the two number equal, compare their lower digit.
@@ -308,6 +348,7 @@ We can use bucket sort as the stable sort here, and as we know they're all integ
 RadixSort can sort $n$ decimal $d$-digits numbers in $O(dn)$ time.
 
 ### Lower Bound for Sorting by Querying the Value(bucket and radix sort)
+
 Use an adversary argument.
 The algorithm, which queries the input $n − 1$ times, does not solve the problem.
 Any algorithm which queries the input at most $n − 1$ times does not solve the problem.
