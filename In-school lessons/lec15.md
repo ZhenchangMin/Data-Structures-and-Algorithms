@@ -27,5 +27,10 @@ Strategy for finding safe edge in Kruskal’s algorithm: Find **minimum weight e
 So, how to identify an edge forms a circle when adding it to $A$?
 Use **Disjoint Set Union(DSU)** data structure to maintain the connected components of $G_A$.
 ![1767791843982](image/lec15/1767791843982.png)
+$m$ is the number of edges, $n$ is the number of vertices.
+$log^* n$ is the iterated logarithm function, which grows extremely slowly.
+So we can see, the time complexity of Kruskal's algorithm is dominated by the sorting step, which is $O(m \log m)$, and as $m\geqq n - 1$, we can also express it as $O(m \log n)$.
 
 ## Prim's Algorithm
+Strategy for finding safe edge in Prim’s algorithm: Keep finding MWOE in one fixed CC in $G_A$.
+![1767796780357](image/lec15/1767796780357.png)
